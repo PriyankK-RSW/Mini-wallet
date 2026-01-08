@@ -7,7 +7,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import "./Dashboard.css";
 import { autoTable } from "jspdf-autotable";  // ← This is the key change
-
+import TransactionImport from "../components/TransactionImport";
 
 export default function Dashboard() {
   const { user, balance, transactions, fetchUserData, transfer, logout } = useAuthStore();
@@ -104,7 +104,6 @@ const exportToPDF = () => {
 
   doc.text(`Period: ${dateRangeText}`, 14, 48);
 
-  // Table data
   const tableData = filteredTransactions.map((tx) => [
     format(new Date(tx.createdAt), "dd MMM yyyy, hh:mm a"),
     tx.type === "DEBIT" || tx.type === "WITHDRAW" ? "Sent" : "Received",
@@ -114,7 +113,7 @@ const exportToPDF = () => {
     tx.reference,
   ]);
 
-  // AutoTable (make sure you imported it correctly!)
+ 
   autoTable(doc, {
     head: [["Date & Time", "Type", "To/From", "Amount", "Debit/Credit", "Reference"]],
     body: tableData,
@@ -124,7 +123,6 @@ const exportToPDF = () => {
     headStyles: { fillColor: [41, 128, 185] },
   });
 
-  // Footer
   const pageCount = doc.internal.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -137,8 +135,9 @@ const exportToPDF = () => {
   doc.save(fileName);
   toast.success("PDF exported successfully!");
 };
+
   return (
-    <div className="dashboard-container">
+    <div>
       <section className="transactions-card">
         <div className="section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
           <h3 className="section-title">Recent Transactions</h3>
@@ -186,6 +185,10 @@ const exportToPDF = () => {
           </div>
         )}
       </section>
+{/* Place this near the top of <main> or above transactions */}
+<div style={{ marginBottom: "24px", textAlign: "right" }}>
+  <TransactionImport onSuccess={fetchUserData} />
+</div>
     </div>
   );
 }

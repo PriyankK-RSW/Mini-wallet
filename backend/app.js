@@ -6,7 +6,7 @@ const app = express();
 const cors = require("cors");
 const stripeRoute = require("./routes/stripeRoute.js"); // Adjusted name if changed
 const webhookRoutes = require("./routes/webhookRoute.js");
-
+const addTransactionRoute = require("./routes/addTransactionRoute");
 app.use(
   cors({
     origin: "*",
@@ -19,7 +19,7 @@ app.use("/stripe", webhookRoutes);
 
 // Now the JSON parser for other routes
 app.use(express.json({ strict: false }));
-
+app.use("/", addTransactionRoute);
 // Mount other routes
 app.use("/stripe", stripeRoute); // Now /stripe/add-money, /stripe/withdraw to avoid root conflicts
 app.use("/auth", authRoutes);
