@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
-import { Eye, EyeOff, Download } from "lucide-react";
 import { format, startOfDay, endOfDay, subDays, startOfMonth, endOfMonth, subMonths } from "date-fns";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import "./Dashboard.css";
-import { autoTable } from "jspdf-autotable";  // ← This is the key change
+import { autoTable } from "jspdf-autotable"; 
 import TransactionImport from "../components/TransactionImport";
 
 export default function Dashboard() {
-  const { user, balance, transactions, fetchUserData, transfer, logout } = useAuthStore();
+  const { user, balance, transactions, fetchUserData,  } = useAuthStore();
 
   
-  const [dateFilter, setDateFilter] = useState("all"); // 'all', 'today', 'last7', 'last30', 'thisMonth', 'lastMonth'
+  const [dateFilter, setDateFilter] = useState("all"); 
 
   useEffect(() => {
     fetchUserData();
@@ -31,7 +30,7 @@ export default function Dashboard() {
         end = endOfDay(now);
         break;
       case "last7":
-        start = startOfDay(subDays(now, 6)); // 7 days including today
+        start = startOfDay(subDays(now, 6)); 
         end = endOfDay(now);
         break;
       case "last30":
@@ -66,16 +65,15 @@ const exportToPDF = () => {
 
   const doc = new jsPDF("p", "mm", "a4");
 
-  // Title
+
   doc.setFontSize(18);
   doc.text("MyWallet Transaction Statement", 14, 22);
 
-  // User info
   doc.setFontSize(12);
   doc.text(`Wallet ID: ${user?.walletId || "N/A"}`, 14, 32);
   doc.text(`Current Balance: ₹${balance ?? "0"}`, 14, 40);
 
-  // === Calculate dateRangeText here (inside the function) ===
+  
   const now = new Date();
   let dateRangeText = "All Time";
 
