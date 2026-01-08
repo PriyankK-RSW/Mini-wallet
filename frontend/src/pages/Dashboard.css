@@ -170,13 +170,25 @@ body {
   border: none;
   padding: 18px;
   border-radius: 16px;
+  
   font-size: 1.3rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
   transition: all 0.3s ease;
 }
-
+.add-money-btn{
+  background: linear-gradient(to right, #2563eb, #7c3aed);
+  color: white;
+  border: none;
+  margin-left: 780px;padding: 18px;
+  border-radius: 16px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
+}
 .send-money-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);

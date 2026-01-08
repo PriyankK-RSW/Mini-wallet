@@ -300,4 +300,3 @@ Never store secrets in plain text
 
 Industry security standard
 
-// 

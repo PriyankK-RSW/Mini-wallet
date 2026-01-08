@@ -9,7 +9,7 @@ const transactionSchema = new mongoose.Schema(
     },
 
     walletId: {
-      type: String, // BUSINESS ID (UPI-like)
+      type: String, 
       required: true,
       index: true
     },
@@ -27,7 +27,7 @@ const transactionSchema = new mongoose.Schema(
 
     type: {
       type: String,
-      enum: ["DEBIT", "CREDIT"],
+      enum: ["DEBIT", "CREDIT" ],
       required: true
     },
 

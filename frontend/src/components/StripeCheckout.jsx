@@ -1,0 +1,40 @@
+// Frontend component (minor tweaks for better handling)
+import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
+import toast from "react-hot-toast";
+
+export default function StripeCheckout({ onClose }) {
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!stripe || !elements) {
+      toast.error("Stripe not loaded");
+      return;
+    }
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: window.location.origin + "/dashboard",
+      },
+    });
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      // confirmPayment will handle redirect if needed; this else might not run
+      toast.success("Payment processing...");
+      onClose();
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <PaymentElement />
+      <button type="submit" className="btn-primary" disabled={!stripe}>
+        Pay
+      </button>
+    </form>
+  );
+}
