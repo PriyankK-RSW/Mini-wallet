@@ -7,6 +7,9 @@ const cors = require("cors");
 const stripeRoute = require("./routes/stripeRoute.js"); // Adjusted name if changed
 const webhookRoutes = require("./routes/webhookRoute.js");
 const addTransactionRoute = require("./routes/addTransactionRoute");
+const healthRoutes = require("./routes/healthcheckRoute.js");
+
+// CORS configuration
 app.use(
   cors({
     origin: "*",
@@ -24,5 +27,6 @@ app.use("/", addTransactionRoute);
 app.use("/stripe", stripeRoute); // Now /stripe/add-money, /stripe/withdraw to avoid root conflicts
 app.use("/auth", authRoutes);
 app.use("/wallet", walletRoutes);
+app.use("/health", healthRoutes);
 
 module.exports = app;

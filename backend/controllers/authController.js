@@ -5,17 +5,57 @@ const Wallet = require("../models/Wallet");
 const { generateWalletId } = require("../utils/generateWalletId");
 require("dotenv").config();
 
+
 const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
+//input validation can be added
+
+const validateEmail = (email) => {  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const validatePassword = (password) => {  
+  return password && password.length >= 6 ;
+};
+
+const validatePin = (pin) => {  
+  const pinRegex = /^\d{4}$/;
+  return pinRegex.test(pin);
+};
+
+const sanitizeInput = (input) => {  
+  return input.replace(/[<>'"]/g, '');
+};
 
 const register = async (req, res) => {
   try {
     const { email, password, pin } = req.body;
 
+
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (!validatePassword(password)) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+    }
+
+    if (!validatePin(pin)) {
+      return res.status(400).json({ message: "PIN must be a 4-digit number" });
+    }
+
+    const sanitizedEmail = sanitizeInput(email);
+    
+    const existingUser = await User.findOne({ email: sanitizedEmail });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already registered" });
+    }
+    
     const passwordHash = await bcrypt.hash(password, saltRounds);
     const pinHash = await bcrypt.hash(pin, saltRounds);
     const walletId = generateWalletId();
 
-    const user = await User.create({ email, passwordHash, pinHash, walletId });
+    const user = await User.create({ email: sanitizedEmail, passwordHash, pinHash, walletId });
     await Wallet.create({ userId: user._id, walletId, balance: 1000 });
 
     res.status(201).json({ message: "User registered successfully" });
@@ -28,7 +68,9 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const sanitizedEmail = sanitizeInput(email);
+
+    const user = await User.findOne({ email : sanitizedEmail });
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
     const valid = await bcrypt.compare(password, user.passwordHash);

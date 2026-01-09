@@ -15,72 +15,50 @@ const transferMoney = async (req, res) => {
     if (!receiverWalletId || !amount || !pin || !idempotencyKey) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+
+    if (amount <= 0) {
+      return res.status(400).json({ message: "Invalid amount" });
+    }
+
+
     const pinValid = await bcrypt.compare(pin, sender.pinHash);
     if (!pinValid) {
       return res.status(401).json({ message: "Invalid transaction PIN" });
     }
 
     const redisKey = `txn:${idempotencyKey}`;
-    const lock = await redis.set(redisKey, "processing", "NX", "EX", 50);
+    const lock = await redis.set(redisKey, "processing", "NX", "EX", 60);
     if (!lock) {
       return res.status(409).json({ message: "Duplicate transaction request" });
     }
 
     session.startTransaction();
 
-    //  Load wallets
-    const senderWallet = await Wallet.findOne(
-      { userId: sender._id },
-      null,
-      { session }
+     const senderWallet = await Wallet.findOneAndUpdate(
+      {
+        userId: sender._id,
+        balance: { $gte: amount } 
+      },
+      { $inc: { balance: -amount } },
+      { new: true, session }
     );
 
-    if (!senderWallet) throw new Error("Sender wallet not found");
-
-    const receiverWallet = await Wallet.findOne(
-      { walletId: receiverWalletId },
-      null,
-      { session }
-    );
-
-    if (!receiverWallet) throw new Error("Receiver wallet not found");
-
-    // Get LAST ledger entries (source of truth)
-    const [lastSenderTxn] = await Transaction.find(
-      { walletId: senderWallet.walletId }
-    )
-      .sort({ createdAt: -1 })
-      .limit(1)
-      .session(session);
-
-    const [lastReceiverTxn] = await Transaction.find(
-      { walletId: receiverWallet.walletId }
-    )
-      .sort({ createdAt: -1 })
-      .limit(1)
-      .session(session);
-
-    const senderPrevBalance =
-      lastSenderTxn?.balanceAfter ?? senderWallet.balance;
-
-    if (senderPrevBalance < amount) {
+    if (!senderWallet) {
       throw new Error("Insufficient balance");
     }
 
-    const receiverPrevBalance =
-      lastReceiverTxn?.balanceAfter ?? receiverWallet.balance;
+    const receiverWallet = await Wallet.findOneAndUpdate(
+      { walletId: receiverWalletId },
+      { $inc: { balance: amount } },
+      { new: true, session }
+    );
 
-    const senderBalanceAfter = senderPrevBalance - amount;
-    const receiverBalanceAfter = receiverPrevBalance + amount;
-
-    senderWallet.balance = senderBalanceAfter;
-    receiverWallet.balance = receiverBalanceAfter;
-
-    await senderWallet.save({ session });
-    await receiverWallet.save({ session });
+    if (!receiverWallet) {
+      throw new Error("Receiver wallet not found");
+    }
 
     const txnRef = generateTransactionRef();
-
+try {
     await Transaction.insertMany(
       [
         {
@@ -89,7 +67,7 @@ const transferMoney = async (req, res) => {
           counterpartyWalletId: receiverWallet.walletId,
           amount,
           type: "DEBIT",
-          balanceAfter: senderBalanceAfter,
+          balanceAfter: senderWallet.balance,
           reference: txnRef
         },
         {
@@ -98,14 +76,18 @@ const transferMoney = async (req, res) => {
           counterpartyWalletId: senderWallet.walletId,
           amount,
           type: "CREDIT",
-          balanceAfter: receiverBalanceAfter,
+          balanceAfter: receiverWallet.balance,
           reference: txnRef
         }
       ],
       { session, ordered: true }
-    );
-
+    );} catch (err) {
+    if (err.code === 11000) {
+      throw new Error("Duplicate transaction reference");
+    }
+  }
     await session.commitTransaction();
+
     await redis.set(redisKey, "completed", "EX", 300);
 
     res.status(200).json({
@@ -115,7 +97,10 @@ const transferMoney = async (req, res) => {
   } catch (err) {
     await session.abortTransaction();
     console.error("Transfer failed:", err.message);
-    res.status(500).json({ error: err.message });
+
+    res.status(500).json({
+      error: err.message
+    });
   } finally {
     session.endSession();
   }
@@ -161,6 +146,7 @@ const getTransactions = async (req, res) => {
   try {
     const userId = req.user._id;
 
+    
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;

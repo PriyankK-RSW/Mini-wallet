@@ -1,4 +1,3 @@
-// Frontend component (minor tweaks for better handling)
 import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
 import toast from "react-hot-toast";
 
@@ -23,7 +22,6 @@ export default function StripeCheckout({ onClose }) {
     if (error) {
       toast.error(error.message);
     } else {
-      // confirmPayment will handle redirect if needed; this else might not run
       toast.success("Payment processing...");
       onClose();
     }
