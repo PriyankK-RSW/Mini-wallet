@@ -16,7 +16,7 @@ const register = async (req, res) => {
     const walletId = generateWalletId();
 
     const user = await User.create({ email, passwordHash, pinHash, walletId });
-    await Wallet.create({ userId: user._id, walletId, balance: 0 });
+    await Wallet.create({ userId: user._id, walletId, balance: 1000 });
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {

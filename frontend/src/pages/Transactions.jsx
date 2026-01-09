@@ -7,6 +7,7 @@ import "jspdf-autotable";
 import "./Dashboard.css";
 import { autoTable } from "jspdf-autotable"; 
 import TransactionImport from "../components/TransactionImport";
+import { Download } from "lucide-react";
 
 export default function Dashboard() {
   const { user, balance, transactions, fetchUserData,  } = useAuthStore();
