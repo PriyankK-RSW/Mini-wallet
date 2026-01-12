@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import "../Css/foodItems.css";
-
+import toast from "react-hot-toast";  
 const FoodItem = () => {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const [buying, setBuying] = useState(false);
   useEffect(() => {
     const fetchFoods = async () => {
       try {
@@ -27,9 +27,48 @@ const FoodItem = () => {
     fetchFoods();
   }, []);
 
-  const handleBuy = (foods) => {
-    console.log("Buy food:", foods);
+   const handleBuy = async (food) => {
+    try {
+      setBuying(true);
 
+      const token = localStorage.getItem("token"); // JWT stored after login
+      if (!token) {
+        toast.error ("Please login first");
+        return;
+      }
+
+      const res = await fetch("http://localhost:5000/order/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          service: "CANTEEN",
+          itemId: food.id,
+          itemName: food.name,
+          itemPrice: food.price,
+          quantity: 1,
+          additionalDetails: {
+            description: food.description
+          }
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Order failed");
+      }
+
+      toast.success("Order placed successfully");
+
+      console.log("Order Response:", data);
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setBuying(false);
+    }
   };
 
   if (loading) return <p className="info-text">Loading foods...</p>;
@@ -54,9 +93,10 @@ const FoodItem = () => {
             <p className="food-description">{food.description}</p>
             <button
               className="buy-btn"
+              disabled={buying}
               onClick={() => handleBuy(food)}
             >
-              Buy Now
+              {buying ? "Processing..." : "Buy Now"}
             </button>
           </div>
         ))}
