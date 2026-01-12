@@ -23,9 +23,8 @@ app.use("/stripe", stripeRoute);
 app.use("/auth", authRoutes);
 app.use("/wallet", walletRoutes);
 app.use("/health", healthRoutes);
-app.use("/services", require("./routes/serviceRoute.js"));
 app.use("/library", require("./routes/librartRoute.js"));
 app.use("/canteen", require("./routes/canteenRoute.js"));
 app.use("/events", require("./routes/eventRoute.js"));
-
+app.use("/order", require("./routes/orderRoute.js"));
 module.exports = app;
