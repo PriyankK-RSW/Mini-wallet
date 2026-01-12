@@ -21,6 +21,7 @@ const transferMoney = async (req, res) => {
     }
 
 
+    
     const pinValid = await bcrypt.compare(pin, sender.pinHash);
     if (!pinValid) {
       return res.status(401).json({ message: "Invalid transaction PIN" });

@@ -5,6 +5,10 @@ import Dashboard from './pages/Dashboard';
 import { useAuthStore } from './store/authStore';
 import './index.css';
 import Transactions from './pages/Transactions'
+import LibraryPage from './pages/LibraryPage';
+import FoodItem from './pages/FoodItem';
+import Events from './pages/Events';
+
 function ProtectedRoute({ children }) {
   const { token } = useAuthStore();
   return token ? children : <Navigate to="/login" />;
@@ -20,6 +24,30 @@ function App() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/library"
+        element={
+          <ProtectedRoute>
+            <LibraryPage />
+          </ProtectedRoute>
+        }
+      />
+    <Route
+        path="/fooditems"
+        element={
+          <ProtectedRoute>
+            <FoodItem />
+          </ProtectedRoute>
+        }
+      />
+    <Route 
+        path="/events"
+        element={
+          <ProtectedRoute>
+            <Events />
           </ProtectedRoute>
         }
       />
