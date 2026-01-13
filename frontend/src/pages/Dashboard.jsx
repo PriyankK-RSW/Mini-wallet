@@ -20,7 +20,7 @@ export default function Dashboard() {
   const [topupAmount, setTopupAmount] = useState("");
   const [clientSecret, setClientSecret] = useState(null);
   const navigate = useNavigate();
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);
@@ -45,7 +45,7 @@ export default function Dashboard() {
 
   const handleAddMoney = async () => {
     try {
-      const res = await fetch("http://localhost:5000/stripe/add-money", {
+      const res = await fetch(`${BASE_URL}stripe/add-money`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

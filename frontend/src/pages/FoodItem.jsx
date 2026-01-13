@@ -6,16 +6,16 @@ const FoodItem = () => {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const [pin, setPin] = useState(""); 
   const [selectedFood, setSelectedFood] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const res = await fetch("http://localhost:5000/canteen/foods");
+        const res = await fetch(`${BASE_URL}canteen/foods`);
         if (!res.ok) throw new Error("Canteen service unavailable");
 
         const data = await res.json();
@@ -46,7 +46,7 @@ const FoodItem = () => {
       const token = localStorage.getItem("token");
       if (!token) return toast.error("Please login first");
 
-      const res = await fetch("http://localhost:5000/order/create", {
+      const res = await fetch(`${BASE_URL}order/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,8 @@ const FoodItem = () => {
           itemName: selectedFood.name,
           itemPrice: selectedFood.price,
           quantity,
-          address 
+          address ,
+          pin
         })
       });
 
@@ -113,6 +114,14 @@ const FoodItem = () => {
                 placeholder="Delivery Address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+              />
+
+              <label>Wallet PIN</label>
+              <input
+                type="password"
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+                required
               />
 
               <p><strong>Total:</strong> ₹ {selectedFood.price * quantity}</p>

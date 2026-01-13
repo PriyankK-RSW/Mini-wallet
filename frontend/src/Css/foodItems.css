@@ -34,6 +34,7 @@
   margin: 0.8rem 0 1.8rem;
   padding-left: 0.4rem;
     -webkit-background-clip: text;
+  background-clip: text;
 }
 
 /* Food Grid */

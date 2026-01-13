@@ -39,6 +39,7 @@
   background: linear-gradient(90deg, var(--accent), var(--primary));
    -webkit-text-fill-color: transparent;
      -webkit-background-clip: text;
+  background-clip: text;
 }
 
 /* Event Grid */

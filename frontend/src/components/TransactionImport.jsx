@@ -7,7 +7,7 @@ export default function TransactionImport({ onSuccess }) {
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -35,7 +35,7 @@ export default function TransactionImport({ onSuccess }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/import-transactions", {
+      const res = await fetch(`${BASE_URL}import-transactions`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

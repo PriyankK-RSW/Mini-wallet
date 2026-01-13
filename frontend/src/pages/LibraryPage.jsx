@@ -5,17 +5,17 @@ const LibraryPage = () => {
 const [books, setBooks] = useState([]);
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState("");
-
+const [pin, setPin] = useState(""); // ✅ REQUIRED
 const [selectedBook, setSelectedBook] = useState(null);
 const [quantity, setQuantity] = useState(1);
 const [address, setAddress] = useState("");   // ✅ REQUIRED
 const [submitting, setSubmitting] = useState(false);
 
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const res = await fetch("http://localhost:5000/library/books");
+        const res = await fetch(`${BASE_URL}library/books`);
         if (!res.ok) throw new Error("Library service unavailable");
 
         const data = await res.json();
@@ -57,7 +57,7 @@ const [submitting, setSubmitting] = useState(false);
         return;
       }
 
-      const res = await fetch("http://localhost:5000/order/create", {
+      const res = await fetch(`${BASE_URL}order/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,8 @@ const [submitting, setSubmitting] = useState(false);
           itemName: selectedBook.name,
           itemPrice: selectedBook.price,
           quantity,
-          address
+          address,
+          pin
         })
       });
 
@@ -129,6 +130,14 @@ const [submitting, setSubmitting] = useState(false);
               <textarea
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+
+              <label>Wallet PIN</label>
+              <input
+                type="password"
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
                 required
               />
 

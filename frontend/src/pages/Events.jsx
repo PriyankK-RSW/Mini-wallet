@@ -6,16 +6,16 @@ const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+  const [pin, setPin] = useState("");
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:5000/events/events");
+        const res = await fetch(`${BASE_URL}events/events`);
         if (!res.ok) throw new Error("Events service unavailable");
 
         const data = await res.json();
@@ -47,7 +47,7 @@ const Events = () => {
       const token = localStorage.getItem("token");
       if (!token) return toast.error("Please login first");
 
-      const res = await fetch("http://localhost:5000/order/create", {
+      const res = await fetch(`${BASE_URL}order/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,8 @@ const Events = () => {
           itemName: selectedEvent.name,
           itemPrice: selectedEvent.price,
           quantity,
-          address 
+          address,
+          pin
         })
       });
 
@@ -118,6 +119,14 @@ const Events = () => {
               <textarea
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+              />
+
+              <label>Wallet PIN</label>
+              <input
+                type="password"
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+                required
               />
 
               <p><strong>Total:</strong> ₹ {selectedEvent.price * quantity}</p>
