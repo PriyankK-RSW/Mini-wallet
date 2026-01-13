@@ -123,3 +123,93 @@ exports.getOrders = async (req, res) => {
     });
   }
 };
+
+exports.getorderByservice = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { service } = req.params;
+
+    const orders = await Order.find({ userId, service })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching orders by service",
+      error: error.message
+    });
+  }
+};
+
+exports.getOrderById = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { orderId } = req.params;
+
+    const order = await Order.findOne({ _id: orderId, userId });
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching order by ID",
+      error: error.message
+    });
+  }
+}
+exports.getAdminDashboard = async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+
+    const totalRevenue = orders.reduce(
+      (sum, order) => sum + order.totalAmount,
+      0
+    );
+
+    const serviceStats = {};
+
+    orders.forEach((order) => {
+      if (!serviceStats[order.service]) {
+        serviceStats[order.service] = {
+          totalOrders: 0,
+          revenue: 0,
+        };
+      }
+
+      serviceStats[order.service].totalOrders += 1;
+      serviceStats[order.service].revenue += order.totalAmount;
+    });
+
+    res.status(200).json({
+      totalOrders: orders.length,
+      totalRevenue,
+      serviceStats,
+      orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching admin dashboard",
+      error: error.message,
+    });
+  }
+};
+exports.getServiceDashboard = async (req, res) => {
+  try {
+   
+    const service = req.user.email.split("@")[0].toUpperCase();
+    const orders = await Order.find({ service })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      totalOrders: orders.length,
+      orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching service dashboard",
+      error: error.message,
+    });
+  }
+};

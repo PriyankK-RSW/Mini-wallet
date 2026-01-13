@@ -8,6 +8,8 @@ import Transactions from './pages/Transactions'
 import LibraryPage from './pages/LibraryPage';
 import FoodItem from './pages/FoodItem';
 import Events from './pages/Events';
+import ServiceDashboard from './pages/ServiceDashboard';
+import AdminDashboad from './pages/adminDashboad';
 
 function ProtectedRoute({ children }) {
   const { token } = useAuthStore();
@@ -51,7 +53,25 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/dashboard/service"
+        element={
+          <ProtectedRoute>
+            <ServiceDashboard />
+          </ProtectedRoute>
+        }
+      />
 
+      <Route
+        path="/dashboard/admin"
+        element={
+          <ProtectedRoute>
+            <AdminDashboad />
+          </ProtectedRoute>
+        }
+      />
+
+      
       <Route
         path="Transactions"
         element={

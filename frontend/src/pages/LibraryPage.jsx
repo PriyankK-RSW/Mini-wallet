@@ -5,10 +5,10 @@ const LibraryPage = () => {
 const [books, setBooks] = useState([]);
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState("");
-const [pin, setPin] = useState(""); // ✅ REQUIRED
+const [pin, setPin] = useState(""); 
 const [selectedBook, setSelectedBook] = useState(null);
 const [quantity, setQuantity] = useState(1);
-const [address, setAddress] = useState("");   // ✅ REQUIRED
+const [address, setAddress] = useState("");   
 const [submitting, setSubmitting] = useState(false);
 
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";

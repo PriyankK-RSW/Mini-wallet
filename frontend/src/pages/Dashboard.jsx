@@ -21,9 +21,29 @@ export default function Dashboard() {
   const [clientSecret, setClientSecret] = useState(null);
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+ 
+ 
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);
+
+   useEffect(() => {
+    if (!user) return; 
+
+    if (user.email === "user3@gmail.com") {
+      navigate("/dashboard/admin");
+    } else if (user.email === "canteen@gmail.com") {
+      navigate("/dashboard/service");
+    } else if (user.email === "library@gmail.com") {
+      navigate("/dashboard/service");
+    } else if (user.email === "events@gmail.com") {
+      navigate("/dashboard/service");
+    } else {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
+
 
   const handleTransfer = async (e) => {
     e.preventDefault();

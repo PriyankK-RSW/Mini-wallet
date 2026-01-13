@@ -11,7 +11,7 @@ const Events = () => {
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
-  const [pin, setPin] = useState("");
+  const [pin, setPin] = useState(""); 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
