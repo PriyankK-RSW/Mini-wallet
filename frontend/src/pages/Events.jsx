@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
 import "../Css/foodItems.css";
 import toast from "react-hot-toast";
-
+import "../Css/events.css";
 const Events = () => {
-  const [events, setevents] = useState([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [buying, setBuying] = useState(false);
+
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [address, setAddress] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const res = await fetch("http://localhost:5000/events/events");
-
-        if (!res.ok) {
-          throw new Error("Events service unavailable");
-        }
+        if (!res.ok) throw new Error("Events service unavailable");
 
         const data = await res.json();
-        setevents(data);
+        setEvents(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -28,15 +30,22 @@ const Events = () => {
     fetchEvents();
   }, []);
 
-  const handleBuy = async (events) => {
-    try {
-      setBuying(true);
+  const openForm = (event) => {
+    setSelectedEvent(event);
+    setQuantity(1);
+    setAddress("");
+  };
 
-      const token = localStorage.getItem("token"); // JWT stored after login
-      if (!token) {
-        toast.error ("Please login first");
-        return;
-      }
+  const closeForm = () => setSelectedEvent(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setSubmitting(true);
+
+      const token = localStorage.getItem("token");
+      if (!token) return toast.error("Please login first");
 
       const res = await fetch("http://localhost:5000/order/create", {
         method: "POST",
@@ -46,33 +55,27 @@ const Events = () => {
         },
         body: JSON.stringify({
           service: "EVENTS",
-          itemId: events.id,
-          itemName: events.name,
-          itemPrice: events.price,
-          quantity: 1,
-          additionalDetails: {
-            description: events.description
-          }
+          itemId: selectedEvent.id,
+          itemName: selectedEvent.name,
+          itemPrice: selectedEvent.price,
+          quantity,
+          address 
         })
       });
 
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Order failed");
-      }
+      if (!res.ok) throw new Error(data.message);
 
       toast.success("Registered successfully");
-
-      console.log("Order Response:", data);
+      closeForm();
     } catch (err) {
       toast.error(err.message);
     } finally {
-      setBuying(false);
+      setSubmitting(false);
     }
   };
 
-  if (loading) return <p className="info-text">Loading events...</p>;
+  if (loading) return <p>Loading events...</p>;
   if (error) return <p className="error-text">{error}</p>;
 
   return (
@@ -80,27 +83,55 @@ const Events = () => {
       <h2>Events</h2>
 
       <div className="food-grid">
-        {events.map((events) => (
-          <div className="food-card" key={events.id}>
-            <img
-              src={events.image}
-              alt={events.name}
-              className="food-image"
-            />
-
-            <h3 className="food-title">{events.name}</h3>
-
-            <p className="food-price">₹ {events.price}</p>
-            <p className="food-description">{events.description}</p>
-            <button
-              className="buy-btn"
-              onClick={() => handleBuy(events)}
-            >
-              Register now
-            </button>
+        {events.map((event) => (
+          <div className="food-card" key={event.id}>
+            <img src={event.image} alt={event.name} />
+            <h3>{event.name}</h3>
+            <p>₹ {event.price}</p>
+            <p>{event.description}</p>
+            <button onClick={() => openForm(event)}>Register</button>
           </div>
         ))}
       </div>
+
+      {selectedEvent && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Event Registration</h3>
+
+            <form onSubmit={handleSubmit}>
+              <label>Event</label>
+              <input value={selectedEvent.name} disabled />
+
+              <label>Price</label>
+              <input value={selectedEvent.price} disabled />
+
+              <label>Tickets</label>
+              <input
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={(e) => setQuantity(+e.target.value)}
+              />
+
+              <label>Address / Notes</label>
+              <textarea
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+
+              <p><strong>Total:</strong> ₹ {selectedEvent.price * quantity}</p>
+
+              <div className="modal-actions">
+                <button type="submit" disabled={submitting}>
+                  {submitting ? "Processing..." : "Confirm"}
+                </button>
+                <button type="button" onClick={closeForm}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

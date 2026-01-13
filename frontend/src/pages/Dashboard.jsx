@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
-import { Eye, EyeOff } from "lucide-react"; // or any icon library you use
+import { Eye, EyeOff } from "lucide-react"; 
 import { format } from "date-fns";
 import "./Dashboard.css";
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "../stripe";
 import StripeCheckout from "../components/StripeCheckout";
-
+import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
   const { user, balance, transactions, fetchUserData, transfer, logout } =
     useAuthStore();
@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [showAddMoney, setShowAddMoney] = useState(false);
   const [topupAmount, setTopupAmount] = useState("");
   const [clientSecret, setClientSecret] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUserData();
@@ -201,6 +202,17 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+        
+
+<section className="services-section">
+      <h2>Services</h2>
+      <div className="services-grid">
+        <div className="service-card" onClick={() => navigate('/food')}>Recharge</div>
+        <div className="service-card" onClick={() => navigate('/fooditems')}>Food</div>
+        <div className="service-card" onClick={() => navigate('/events')}>Events</div>
+        <div className="service-card" onClick={() => navigate('/library')}>Library</div>
+      </div>
+    </section>
 
         {/* Transaction History */}
         <section className="transactions-card">

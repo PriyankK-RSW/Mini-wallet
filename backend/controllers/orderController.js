@@ -13,7 +13,7 @@ exports.createOrder = async (req, res) => {
       itemName,
       itemPrice,
       quantity = 1,
-      additionalDetails
+      address 
     } = req.body;
 
     if (!service || !itemId || !itemName || !itemPrice) {
@@ -59,7 +59,7 @@ exports.createOrder = async (req, res) => {
       quantity,
       totalAmount,
       transactionId: transaction._id,
-      additionalDetails
+      address
     });
 
     res.status(201).json({

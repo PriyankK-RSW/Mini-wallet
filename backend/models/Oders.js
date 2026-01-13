@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema(
     quantity: { type: Number, default: 1 },
     totalAmount: { type: Number, required: true },
     transactionId: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" },
-    additionalDetails: { type: Object },
+    address : { type: String, required: true },
     status: { type: String, default: "COMPLETED" }
   },
   { timestamps: true }
