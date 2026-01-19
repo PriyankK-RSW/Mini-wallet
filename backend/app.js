@@ -27,4 +27,5 @@ app.use("/library", require("./routes/librartRoute.js"));
 app.use("/canteen", require("./routes/canteenRoute.js"));
 app.use("/events", require("./routes/eventRoute.js"));
 app.use("/order", require("./routes/orderRoute.js"));
+app.use("/rewards", require("./routes/rewaredData.js"));
 module.exports = app;

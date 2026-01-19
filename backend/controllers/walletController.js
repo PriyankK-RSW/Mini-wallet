@@ -4,7 +4,8 @@ const Wallet = require("../models/Wallet");
 const Transaction = require("../models/Transaction");
 const redis = require("../config/redis");
 const { generateTransactionRef } = require("../utils/generateTransactionRef");
-const User = require("../models/User")
+const User = require("../models/User");
+const { addRewardPoints } = require("./rewardController");
 const transferMoney = async (req, res) => {
   const session = await mongoose.startSession();
 
@@ -90,7 +91,7 @@ try {
     await session.commitTransaction();
 
     await redis.set(redisKey, "completed", "EX", 300);
-
+    await addRewardPoints(sender._id, amount);
     res.status(200).json({
       message: "Transfer successful",
       reference: txnRef

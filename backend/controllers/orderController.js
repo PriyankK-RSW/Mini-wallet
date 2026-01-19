@@ -6,7 +6,7 @@ const User = require("../models/User");
 const { genTransactionReference } = require("../utils/generateTransactionRef");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-
+const {addRewardPoints }= require("../controllers/rewardController")
 
 exports.createOrder = async (req, res) => {
   const session = await mongoose.startSession();
@@ -87,9 +87,12 @@ exports.createOrder = async (req, res) => {
       }],
       { session }
     );
+    
 
     await session.commitTransaction();
     session.endSession();
+    await addRewardPoints(userId, totalAmount);
+
 
     res.status(201).json({
       message: "Order placed successfully",

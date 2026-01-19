@@ -21,13 +21,15 @@ export default function Dashboard() {
   const [clientSecret, setClientSecret] = useState(null);
   const [orders, setOrders] = useState([]);
   const [showOrders, setShowOrders] = useState(false);
+  const [rewards, setRewards] = useState(0);
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
 
   useEffect(() => {
     fetchUserData();
+    console.log("User data fetched", user);
   }, [fetchUserData]);
-
+  
   useEffect(() => {
     if (!user) return;
 
@@ -44,6 +46,24 @@ export default function Dashboard() {
     }
   }, [user, navigate]);
 
+  const fetchRewardsPoints = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}rewards/rewardsPoints`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const data = await res.json();
+      setRewards(data.rewardsPoints || 0);
+
+    } catch (err) {
+      console.log("Error fetching rewards points:", err);
+    }
+  };
+
+  fetchRewardsPoints();
   const fetchMyorderData = async () => {
     try {
       const res = await fetch(`${BASE_URL}order/getMyorders`, {
@@ -61,6 +81,27 @@ export default function Dashboard() {
       console.log("Error fetching my orders:", err);
     }
   };
+
+  const redeemRewardsPoints = async (points) => {
+    try {
+      const res = await fetch(`${BASE_URL}rewards/redeemPoints`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ pointsToRedeem: points }),
+      });
+
+      const data = await res.json();
+      toast.success(data.message || "Points redeemed successfully");
+      fetchUserData();
+      fetchRewardsPoints();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to redeem points");
+    }
+  };  
+
 
   const handleTransfer = async (e) => {
     e.preventDefault();
@@ -119,7 +160,7 @@ export default function Dashboard() {
             ) : (
               <span className={isHidden ? "blurred" : ""}>₹{balance}</span>
             )}
-
+            
             <button
               className="eye-toggle"
               onClick={toggleVisibility}
@@ -128,7 +169,7 @@ export default function Dashboard() {
               {isHidden ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-
+            <p>Reward Points : {rewards } </p>
           <p className="wallet-id">
             Wallet ID: {user?.walletId || "Loading..."}
           </p>
@@ -148,6 +189,12 @@ export default function Dashboard() {
           >
             My Orders
           </button>
+            <button
+          onClick={() => redeemRewardsPoints(rewards)}
+          className="add-money-btn"
+        >
+          Redeem Rewards Points
+        </button> 
 
           <div>
             {showOrders && orders.length > 0 && (
@@ -253,6 +300,11 @@ export default function Dashboard() {
         >
           Send Money
         </button>
+        {/* Redeem Rewards Points Button */}
+      
+        {/*Redem model*/}
+        
+        
 
         {/* Transfer Modal */}
         {showTransfer && (
