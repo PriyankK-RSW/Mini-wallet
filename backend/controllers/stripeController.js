@@ -2,8 +2,11 @@
 const mongoose = require("mongoose");
 const Wallet = require("../models/Wallet");
 const Transaction = require("../models/Transaction");
-const { generateTransactionRef } = require("../utils/generateTransactionRef");
+
 const stripe = require("../config/stripe");
+function generateTransactionRef() {
+  return `TXN${Date.now()}`;
+}
 
 const validateAmount = (amount) => {
   return amount && typeof amount === "number" && amount > 0;

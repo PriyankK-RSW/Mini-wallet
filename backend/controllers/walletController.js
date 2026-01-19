@@ -3,9 +3,14 @@ const bcrypt = require("bcrypt");
 const Wallet = require("../models/Wallet");
 const Transaction = require("../models/Transaction");
 const redis = require("../config/redis");
-const { generateTransactionRef } = require("../utils/generateTransactionRef");
+
 const User = require("../models/User");
 const { addRewardPoints } = require("./rewardController");
+
+function generateTransactionRef() {
+  return `TXN${Date.now()}`;
+}
+
 const transferMoney = async (req, res) => {
   const session = await mongoose.startSession();
 
