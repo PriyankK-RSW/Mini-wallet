@@ -30,7 +30,7 @@ export default function Dashboard() {
    useEffect(() => {
     if (!user) return; 
 
-    if (user.email === "user3@gmail.com") {
+    if (user.email === "admin@gmail.com") {
       navigate("/dashboard/admin");
     } else if (user.email === "canteen@gmail.com") {
       navigate("/dashboard/service");
@@ -39,7 +39,7 @@ export default function Dashboard() {
     } else if (user.email === "events@gmail.com") {
       navigate("/dashboard/service");
     } else {
-      navigate("/dashboard");
+      navigate("/");
     }
   }, [user, navigate]);
 
@@ -83,11 +83,10 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      {/* Header */}
       <header className="dashboard-header">
         <div className="header-content">
           <h1 className="app-title">MyWallet</h1>
-          <button onClick={logout} className="logout-btn">
+          <button onClick={logout} className="logout-btnn">
             Logout
           </button>
         </div>

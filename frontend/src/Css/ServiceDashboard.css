@@ -1,6 +1,117 @@
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --gray: #64748b;
+  --dark: #0f172a;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --radius: 12px;
+  --shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
 
 .service-dashboard {
-  padding: 20px;
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 2rem 1.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0;
+}
+
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.overview-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.8rem 2rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease;
+}
+
+.overview-card:hover {
+  transform: translateY(-4px);
+}
+
+.overview-card.revenue {
+  border-left: 5px solid var(--success);
+}
+
+.card-label {
+  color: var(--gray);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.card-value {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+
+.logout-btn {
+  padding: 0.65rem 1.4rem;
+  background: #d20000;           
+  color: #ffffff;                  
+  border: none;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  margin-top:1.0rem;
+  margin-left: 90%;
+
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: #6e2c2c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.12);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+/* Orders Section */
+.orders-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0 0 1.2rem;
+}
+
+.table-wrapper {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border: 1px solid var(--border);
 }
 
 .orders-table {
@@ -10,40 +121,105 @@
 
 .orders-table th,
 .orders-table td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  padding: 1.1rem 1.3rem;
   text-align: left;
 }
 
+.orders-table thead {
+  background: #f1f5f9;
+}
+
 .orders-table th {
-  background-color: #f0f0f0;
+  font-weight: 600;
+  color: var(--gray);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
-.orders-table tr:nth-child(even) {
-  background-color: #fafafa;
-}   
-.orders-table tr:hover {
-  background-color: #f1f1f1;
+
+.orders-table tbody tr {
+  border-bottom: 1px solid var(--border);
 }
-.status-completed {
-  color: green;
-  font-weight: bold;
+
+.orders-table tbody tr:last-child {
+  border-bottom: none;
 }
-.status-pending {
-  color: orange;
-  font-weight: bold;
+
+.orders-table tbody tr:hover {
+  background: #f8faff;
 }
-.status-failed {
-  color: red;
-  font-weight: bold;
-}   
-.total-amount {
-  margin-top: 20px;
-  font-size: 1.2em;
-  font-weight: bold;
+
+.item-name {
+  font-weight: 500;
+  color: var(--dark);
 }
-.no-orders {
+
+.address-cell {
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 0.35rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  display: inline-block;
   text-align: center;
-  font-size: 1.2em;
-  color: #777;
-  margin-top: 50px;
+  min-width: 90px;
+}
+
+.status-badge.pending    { background: #fef3c7; color: #92400e; }
+.status-badge.processing { background: #dbeafe; color: #1e40af; }
+.status-badge.completed  { background: #d1fae5; color: #065f46; }
+.status-badge.cancelled  { background: #fee2e2; color: #991b1b; }
+
+/* Empty & Loading States */
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 6rem 1rem;
+  color: var(--gray);
+}
+
+.empty-state .empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-state h3 {
+  font-size: 1.4rem;
+  color: var(--dark);
+  margin: 0.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .overview-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .orders-table {
+    min-width: 900px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .card-value {
+    font-size: 2.1rem;
+  }
 }

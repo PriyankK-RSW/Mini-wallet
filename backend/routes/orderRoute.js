@@ -11,7 +11,7 @@ router.get("/", authMiddleware,  getOrders);
 router.get(
   "/Dashboard/admin",
   authMiddleware,
-  authorizeDashboard(["user3@gmail.com"]),
+  authorizeDashboard(["admin@gmail.com"]),
   getAdminDashboard
 );
 

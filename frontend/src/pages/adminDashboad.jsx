@@ -6,8 +6,11 @@ import "../Css/AdminDashboard.css";
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
+const logout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+  useEffect(() => { 
     const fetchAdminDashboard = async () => {
       try {
         const res = await fetch("http://localhost:5000/order/Dashboard/admin", {
@@ -38,8 +41,9 @@ export default function AdminDashboard() {
   return (
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
-
-      {/* OVERALL STATS */}
+     <button onClick={logout}  className="logout-btn">
+             Logout
+           </button> 
       <div className="stats-grid">
         <div className="stat-card">
           <h3>Total Orders</h3>
@@ -49,22 +53,22 @@ export default function AdminDashboard() {
         <div className="stat-card">
           <h3>Total Revenue</h3>
           <p>₹{totalRevenue}</p>
+          
         </div>
       </div>
 
-      {/* SERVICE-WISE STATS */}
-      <h2>Service Breakdown</h2>
+      <h2> ALl Service </h2>
       <div className="stats-grid">
         {Object.entries(serviceStats).map(([service, stats]) => (
           <div key={service} className="stat-card">
             <h3>{service}</h3>
             <p>Orders: {stats.totalOrders}</p>
             <p>Revenue: ₹{stats.revenue}</p>
+              
           </div>
         ))}
       </div>
 
-      {/* ORDERS TABLE */}
       <h2>All Orders</h2>
 
       <div className="table-wrapper">

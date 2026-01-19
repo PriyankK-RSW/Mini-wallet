@@ -1,25 +1,26 @@
-
+/* Dashboard.css - MiniWallet - Professional Finance Dashboard Style */
+/* Clean, trustworthy, modern light theme - 2025/2026 */
 
 :root {
-  --primary: #5e60ce;          
+  --primary:    #5e60ce;         /* Main brand indigo */
   --primary-dark: #4d4fc2;
-  --primary-light: #7b7ee8;
-  --success: #00c853;           
-  --danger: #ff5252;
-  --warning: #ffb300;
-  --text-primary: #1a1a2e;
-  --text-secondary: #4a4a68;
-  --text-light: #7a7a9a;
-  --bg: #f7f9fc;
-  --card: #ffffff;
-  --card-hover: #f8faff;
-  --border: #e0e4f0;
-  --border-light: #f0f2fa;
-  --radius: 16px;
-  --radius-sm: 12px;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.10);
-  --transition: all 0.22s ease;
+  --primary-light: #787aff;
+  --success:    #00c853;         /* Money green */
+  --danger:     #ff5252;
+  --text-dark:  #0f172a;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-light: #64748b;
+  --bg:         #f8fafc;
+  --surface:    #ffffff;
+  --surface-hover: #f9fbff;
+  --border:     #e2e8f0;
+  --border-subtle: #f1f5f9;
+  --radius:     16px;
+  --radius-sm:  12px;
+  --shadow-card: 0 4px 18px rgba(0,0,0,0.07);
+  --shadow-elevated: 0 10px 30px rgba(0,0,0,0.11);
+  --transition: all 0.23s ease;
 }
 
 * {
@@ -28,32 +29,25 @@
   box-sizing: border-box;
 }
 
-body {
-  background: var(--bg);
-  color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── Layout ── */
 .dashboard-container {
   min-height: 100vh;
   background: var(--bg);
-  padding-bottom: 2rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+/* ── Header ── */
 .dashboard-header {
   background: white;
-  border-bottom: 1px solid var(--border-light);
-  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 1.1rem 1.5rem;
   position: sticky;
   top: 0;
-  z-index: 100;
-  box-shadow: var(--shadow-sm);
+  z-index: 1000;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
 }
 
 .header-content {
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -61,77 +55,80 @@ body {
 }
 
 .app-title {
-  font-size: 1.9rem;
+  font-size: 2rem;
   font-weight: 700;
   background: linear-gradient(90deg, var(--primary), var(--primary-light));
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.5px;
   -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.6px;
 }
 
-.logout-btn {
-  padding: 0.6rem 1.3rem;
-  border: 1.5px solid var(--primary);
+.logout-btnn {
+  padding: 0.65rem 1.5rem;
   border-radius: 50px;
-  background: transparent;
-  color: var(--primary);
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  margin-left: 165%;
   font-weight: 600;
+  font-size: 0.97rem;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .logout-btn:hover {
-  background: var(--primary);
-  color: white;
+  background: #fecaca;
+  transform: translateY(-1px);
 }
 
 /* ── Main Content ── */
 .dashboard-main {
-  max-width: 1100px;
-  margin: 1.5rem auto;
-  padding: 0 1rem;
+  max-width: 1180px;
+  margin: 1.8rem auto;
+  padding: 0 1.2rem;
   display: grid;
-  gap: 1.8rem;
+  gap: 2rem;
 }
 
-/* Balance Card - Most important element */
+/* Balance Card - Hero Section */
 .balance-card {
-  background: white;
+  background: linear-gradient(135deg, #ffffff, #f9fbff);
   border-radius: var(--radius);
-  padding: 2rem 1.8rem;
-  box-shadow: var(--shadow-md);
+  padding: 2.2rem 2rem;
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid var(--border);
   position: relative;
-  overflow: hidden;
 }
 
 .balance-label {
   color: var(--text-secondary);
-  font-size: 1rem;
-  margin-bottom: 0.7rem;
+  font-size: 1.05rem;
   font-weight: 500;
+  margin-bottom: 0.9rem;
 }
 
 .balance-amount {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  font-size: 2.8rem;
+  gap: 1.4rem;
+  font-size: 3.2rem;
   font-weight: 700;
-  margin-bottom: 1.1rem;
-  letter-spacing: -1px;
+  color: var(--text-dark);
+  margin-bottom: 1.3rem;
+  letter-spacing: -1.2px;
 }
 
 .blurred {
-  filter: blur(9px);
+  filter: blur(10px);
   user-select: none;
 }
 
 .eye-toggle {
-  background: var(--border-light);
+  background: var(--border-subtle);
   border: none;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -141,115 +138,117 @@ body {
 }
 
 .eye-toggle:hover {
-  background: #e8edff;
+  background: #e0e7ff;
   color: var(--primary);
 }
 
 .wallet-id {
   color: var(--text-light);
-  font-size: 0.95rem;
-  margin: 0.8rem 0 1.6rem;
+  font-size: 0.98rem;
+  margin: 1rem 0 1.8rem;
 }
 
 .add-money-btn {
   background: var(--success);
   color: white;
   border: none;
-  padding: 1rem 2rem;
+  padding: 1.1rem 2.2rem;
   border-radius: 50px;
-  font-size: 1.1rem;
+  font-size: 1.12rem;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 5px 16px rgba(0, 200, 83, 0.28);
   transition: var(--transition);
-  box-shadow: 0 4px 14px rgba(0, 200, 83, 0.25);
 }
 
 .add-money-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 200, 83, 0.3);
+  box-shadow: 0 10px 28px rgba(0, 200, 83, 0.35);
 }
 
-/* Quick Actions */
+/* Quick Action - Send Money */
 .send-money-btn {
   background: var(--primary);
   color: white;
   border: none;
-  padding: 1.1rem;
+  padding: 1.2rem;
   border-radius: var(--radius);
-  font-size: 1.15rem;
+  font-size: 1.18rem;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
   width: 100%;
-  box-shadow: 0 4px 14px rgba(94, 96, 206, 0.2);
+  box-shadow: 0 5px 16px rgba(94, 96, 206, 0.22);
+  transition: var(--transition);
 }
 
 .send-money-btn:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(94, 96, 206, 0.3);
 }
 
-/* Services Grid */
+/* Services Section */
 .services-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1.3rem;
-  color: var(--text-primary);
-  font-weight: 600;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1.4rem;
 }
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 1.2rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1.3rem;
 }
 
 .service-card {
   background: white;
   border-radius: var(--radius-sm);
-  padding: 1.5rem 1rem;
+  padding: 1.6rem 1.2rem;
   text-align: center;
-  border: 1.5px solid var(--border-light);
+  border: 1.5px solid var(--border-subtle);
   transition: var(--transition);
   cursor: pointer;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 1.05rem;
 }
 
 .service-card:hover {
   border-color: var(--primary-light);
   color: var(--primary);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
 }
 
-/* Transactions */
+/* Transactions Section */
 .transactions-card {
   background: white;
   border-radius: var(--radius);
-  padding: 1.8rem;
-  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
 }
 
 .section-title {
-  font-size: 1.4rem;
-  margin-bottom: 1.4rem;
-  color: var(--text-primary);
-  font-weight: 600;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1.5rem;
 }
 
 .transactions-list {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.3rem;
 }
 
 .transaction-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border-light);
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .transaction-item:last-child {
@@ -257,88 +256,86 @@ body {
 }
 
 .transaction-desc {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
+  font-size: 1.05rem;
 }
 
 .transaction-meta {
-  margin-top: 0.4rem;
-  font-size: 0.84rem;
+  margin-top: 0.45rem;
+  font-size: 0.88rem;
   color: var(--text-light);
 }
 
 .transaction-amount {
   font-weight: 700;
-  font-size: 1.3rem;
-  min-width: 100px;
+  font-size: 1.45rem;
+  min-width: 110px;
   text-align: right;
 }
 
-.debit { color: var(--danger); }
+.debit  { color: var(--danger); }
 .credit { color: var(--success); }
 
 /* ── Modals ── */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(26, 26, 46, 0.65);
+  background: rgba(15, 23, 42, 0.68);
   display: grid;
   place-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
+  z-index: 2000;
+  backdrop-filter: blur(6px);
 }
 
 .modal-card {
   background: white;
   border-radius: var(--radius);
   width: 92%;
-  max-width: 420px;
-  padding: 2rem;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.22);
-  animation: modalAppear 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes modalAppear {
-  from { opacity: 0; transform: scale(0.92) translateY(20px); }
-  to   { opacity: 1; transform: none; }
+  max-width: 440px;
+  padding: 2.2rem;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.26);
+  max-height: 92vh;
+  overflow-y: auto;
 }
 
 .modal-title {
-  font-size: 1.55rem;
-  margin-bottom: 1.8rem;
+  font-size: 1.7rem;
+  font-weight: 700;
   text-align: center;
-  color: var(--text-primary);
+  margin-bottom: 2rem;
+  color: var(--text-dark);
 }
 
 .input-field {
   width: 100%;
-  padding: 1rem 1.2rem;
-  margin-bottom: 1.3rem;
+  padding: 1.05rem 1.3rem;
+  margin-bottom: 1.4rem;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   transition: var(--transition);
 }
 
 .input-field:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(94, 96, 206, 0.15);
+  box-shadow: 0 0 0 3px rgba(94,96,206,0.16);
 }
 
 .modal-actions {
   display: flex;
-  gap: 1rem;
-  margin-top: 1.6rem;
+  gap: 1.2rem;
+  margin-top: 1.8rem;
 }
 
 .btn-primary,
 .btn-secondary {
   flex: 1;
-  padding: 1rem;
+  padding: 1.1rem;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
@@ -354,19 +351,19 @@ body {
 }
 
 .btn-secondary {
-  background: #f0f2fa;
+  background: var(--border-subtle);
   color: var(--text-secondary);
 }
 
 .btn-secondary:hover {
-  background: #e5e9f2;
+  background: #e2e8f0;
 }
 
-/* Loading & Empty states */
+/* States */
 .loading,
 .no-transactions {
-  color: var(--text-light);
   text-align: center;
-  padding: 2.5rem 0;
-  font-size: 1.1rem;
+  padding: 3.5rem 1rem;
+  color: var(--text-light);
+  font-size: 1.15rem;
 }

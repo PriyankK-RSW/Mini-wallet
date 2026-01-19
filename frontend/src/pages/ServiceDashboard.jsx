@@ -7,14 +7,17 @@ export default function ServiceDashboard({ service }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(`http://localhost:5000/order/Dashboard/service`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const data = await res.json();
@@ -31,46 +34,78 @@ export default function ServiceDashboard({ service }) {
     fetchOrders();
   }, [service]);
 
-  const totalRevenue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
+  const totalRevenue = orders.reduce((acc, o) => acc + o.totalAmount, 0);
 
   return (
     <div className="service-dashboard">
-      <h2>{service} Orders</h2>
-      <p>Total Orders: {orders.length}</p>
-      <p>Total Revenue: ₹{totalRevenue}</p>
+      <div className="dashboard-header">
+        <h1>{service} Dashboard</h1>
+        <button onClick={logout} className="logout-btn">
+          Logout
+        </button>
+      </div>
+
+      <div className="overview-cards">
+        <div className="overview-card">
+          <div className="card-label">Total Orders</div>
+          <div className="card-value">{orders.length}</div>
+        </div>
+
+        <div className="overview-card revenue">
+          <div className="card-label">Total Revenue</div>
+          <div className="card-value">
+            ₹{totalRevenue.toLocaleString("en-IN")}
+          </div>
+        </div>
+      </div>
 
       {loading ? (
-        <p>Loading orders...</p>
+        <div className="loading-state">Loading your orders...</div>
       ) : orders.length === 0 ? (
-        <p>No orders found.</p>
+        <div className="empty-state">
+          <div className="empty-icon">📭</div>
+          <h3>No orders yet</h3>
+          <p>When customers place orders, they'll appear here.</p>
+        </div>
       ) : (
-        <table className="orders-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Item</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order, index) => (
-              <tr key={order._id}>
-                <td>{index + 1}</td>
-                <td>{order.itemName}</td>
-                <td>₹{order.itemPrice}</td>
-                <td>{order.quantity}</td>
-                <td>₹{order.totalAmount}</td>
-                <td>{order.status}</td>
-                <td>{format(new Date(order.createdAt), "dd MMM yyyy, hh:mm a")}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="orders-section">
+          <h2>Recent Orders</h2>
+          <div className="table-wrapper">
+            <table className="orders-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Item</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Address</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order, index) => (
+                  <tr key={order._id}>
+                    <td>{index + 1}</td>
+                    <td className="item-name">{order.itemName}</td>
+                    <td>₹{order.itemPrice.toLocaleString("en-IN")}</td>
+                    <td>{order.quantity}</td>
+                    <td>₹{order.totalAmount.toLocaleString("en-IN")}</td>
+                    <td>
+                      <span className={`status-badge ${order.status.toLowerCase()}`}>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td className="address-cell">{order.address}</td>
+                    <td>{format(new Date(order.createdAt), "dd MMM yyyy")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
     </div>
   );
-}
+}   
