@@ -1,32 +1,22 @@
-/* Dashboard.css - MiniWallet - Professional Finance Dashboard Style */
-/* Clean, trustworthy, modern light theme - 2025/2026 */
-
 :root {
-  --primary:    #5e60ce;         /* Main brand indigo */
+  --primary: #5e60ce;
   --primary-dark: #4d4fc2;
   --primary-light: #787aff;
-  --success:    #00c853;         /* Money green */
-  --danger:     #ff5252;
-  --text-dark:  #0f172a;
+  --success: #00c853;
+  --danger: #ff5252;
+  --text-dark: #0f172a;
   --text-primary: #1e293b;
   --text-secondary: #475569;
   --text-light: #64748b;
-  --bg:         #f8fafc;
-  --surface:    #ffffff;
-  --surface-hover: #f9fbff;
-  --border:     #e2e8f0;
-  --border-subtle: #f1f5f9;
-  --radius:     16px;
-  --radius-sm:  12px;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --radius: 16px;
+  --radius-sm: 12px;
   --shadow-card: 0 4px 18px rgba(0,0,0,0.07);
   --shadow-elevated: 0 10px 30px rgba(0,0,0,0.11);
   --transition: all 0.23s ease;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 .dashboard-container {
@@ -35,11 +25,11 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* ── Header ── */
+/* Header */
 .dashboard-header {
   background: white;
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  padding: 1.1rem 1.6rem;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -47,63 +37,64 @@
 }
 
 .header-content {
-  max-width: 1180px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1.5rem;
 }
 
 .app-title {
-  font-size: 2rem;
+  font-size: 2.1rem;
   font-weight: 700;
   background: linear-gradient(90deg, var(--primary), var(--primary-light));
   -webkit-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.6px;
 }
 
+/* Logout - modern & consistent style */
 .logout-btnn {
   padding: 0.65rem 1.5rem;
-  border-radius: 50px;
-  background: #fee2e2;
+  background: #fef2f2;
   color: #dc2626;
   border: none;
-  margin-left: 165%;
+  border-radius: 50px;
+  font-size: 0.96rem;
   font-weight: 600;
-  font-size: 0.97rem;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.22s ease;
+  white-space: nowrap;
 }
 
-.logout-btn:hover {
-  background: #fecaca;
+.logout-btnn:hover {
+  background: #fee2e2;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.12);
 }
 
-/* ── Main Content ── */
+/* Main Layout */
 .dashboard-main {
-  max-width: 1180px;
-  margin: 1.8rem auto;
+  max-width: 1200px;
+  margin: 2rem auto;
   padding: 0 1.2rem;
   display: grid;
-  gap: 2rem;
+  gap: 2.2rem;
 }
 
-/* Balance Card - Hero Section */
+/* Balance Card - Most important */
 .balance-card {
-  background: linear-gradient(135deg, #ffffff, #f9fbff);
+  background: white;
   border-radius: var(--radius);
-  padding: 2.2rem 2rem;
+  padding: 2.4rem 2.2rem;
   box-shadow: var(--shadow-elevated);
   border: 1px solid var(--border);
-  position: relative;
 }
 
 .balance-label {
   color: var(--text-secondary);
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   font-weight: 500;
   margin-bottom: 0.9rem;
 }
@@ -112,10 +103,10 @@
   display: flex;
   align-items: center;
   gap: 1.4rem;
-  font-size: 3.2rem;
+  font-size: 3.4rem;
   font-weight: 700;
   color: var(--text-dark);
-  margin-bottom: 1.3rem;
+  margin-bottom: 1.4rem;
   letter-spacing: -1.2px;
 }
 
@@ -125,10 +116,10 @@
 }
 
 .eye-toggle {
-  background: var(--border-subtle);
+  background: var(--border-light);
   border: none;
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -144,21 +135,28 @@
 
 .wallet-id {
   color: var(--text-light);
-  font-size: 0.98rem;
-  margin: 1rem 0 1.8rem;
+  font-size: 1rem;
+  margin: 1.1rem 0 2rem;
+}
+
+/* Action Buttons in Balance Card */
+.add-money-btn,
+.add-money-btnn {
+  padding: 1.05rem 2.1rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }
 
 .add-money-btn {
   background: var(--success);
   color: white;
-  border: none;
-  padding: 1.1rem 2.2rem;
-  border-radius: 50px;
-  font-size: 1.12rem;
-  font-weight: 600;
-  cursor: pointer;
   box-shadow: 0 5px 16px rgba(0, 200, 83, 0.28);
-  transition: var(--transition);
 }
 
 .add-money-btn:hover {
@@ -166,7 +164,62 @@
   box-shadow: 0 10px 28px rgba(0, 200, 83, 0.35);
 }
 
-/* Quick Action - Send Money */
+.add-money-btnn {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 5px 16px rgba(94, 96, 206, 0.22);
+}
+
+.add-money-btnn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(94, 96, 206, 0.3);
+}
+
+/* My Orders Box */
+.orders-box {
+  margin-top: 2rem;
+  background: #f9fbff;
+  border-radius: var(--radius);
+  padding: 1.6rem;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.orders-box h3 {
+  margin: 0 0 1.4rem 0;
+  font-size: 1.45rem;
+  color: var(--text-dark);
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.orders-table thead {
+  background: #f1f5f9;
+}
+
+.orders-table th {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.orders-table tbody tr:hover {
+  background: #f8faff;
+}
+
+/* Send Money Button (below balance card) */
 .send-money-btn {
   background: var(--primary);
   color: white;
@@ -179,68 +232,68 @@
   width: 100%;
   box-shadow: 0 5px 16px rgba(94, 96, 206, 0.22);
   transition: var(--transition);
+  margin: 1.5rem 0;
 }
 
 .send-money-btn:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(94, 96, 206, 0.3);
 }
 
-/* Services Section */
+/* Services Grid */
 .services-section h2 {
-  font-size: 1.65rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: 1.4rem;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 1.3rem;
-}
-
-.service-card {
-  background: white;
-  border-radius: var(--radius-sm);
-  padding: 1.6rem 1.2rem;
-  text-align: center;
-  border: 1.5px solid var(--border-subtle);
-  transition: var(--transition);
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-weight: 600;
-  font-size: 1.05rem;
-}
-
-.service-card:hover {
-  border-color: var(--primary-light);
-  color: var(--primary);
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-card);
-}
-
-/* Transactions Section */
-.transactions-card {
-  background: white;
-  border-radius: var(--radius);
-  padding: 2rem;
-  box-shadow: var(--shadow-card);
-  border: 1px solid var(--border);
-}
-
-.section-title {
-  font-size: 1.55rem;
+  font-size: 1.7rem;
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 1.5rem;
 }
 
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.4rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: var(--radius-sm);
+  padding: 1.8rem 1.2rem;
+  text-align: center;
+  border: 1.5px solid var(--border-light);
+  transition: var(--transition);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.service-card:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
+}
+
+/* Transactions */
+.transactions-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 2.2rem;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+}
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1.6rem;
+}
+
 .transactions-list {
   display: flex;
   flex-direction: column;
-  gap: 1.3rem;
+  gap: 1.4rem;
 }
 
 .transaction-item {
@@ -248,7 +301,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .transaction-item:last-child {
@@ -258,30 +311,30 @@
 .transaction-desc {
   font-weight: 600;
   color: var(--text-primary);
-  font-size: 1.05rem;
+  font-size: 1.08rem;
 }
 
 .transaction-meta {
-  margin-top: 0.45rem;
-  font-size: 0.88rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
   color: var(--text-light);
 }
 
 .transaction-amount {
   font-weight: 700;
-  font-size: 1.45rem;
-  min-width: 110px;
+  font-size: 1.5rem;
+  min-width: 120px;
   text-align: right;
 }
 
 .debit  { color: var(--danger); }
 .credit { color: var(--success); }
 
-/* ── Modals ── */
+/* Modals */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.68);
+  background: rgba(15, 23, 42, 0.7);
   display: grid;
   place-items: center;
   z-index: 2000;
@@ -292,50 +345,47 @@
   background: white;
   border-radius: var(--radius);
   width: 92%;
-  max-width: 440px;
-  padding: 2.2rem;
-  box-shadow: 0 24px 70px rgba(0,0,0,0.26);
-  max-height: 92vh;
-  overflow-y: auto;
+  max-width: 460px;
+  padding: 2.4rem;
+  box-shadow: 0 25px 75px rgba(0,0,0,0.28);
 }
 
 .modal-title {
-  font-size: 1.7rem;
+  font-size: 1.75rem;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.2rem;
   color: var(--text-dark);
 }
 
 .input-field {
   width: 100%;
-  padding: 1.05rem 1.3rem;
-  margin-bottom: 1.4rem;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 1.5rem;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  font-size: 1.08rem;
-  transition: var(--transition);
+  font-size: 1.1rem;
 }
 
 .input-field:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(94,96,206,0.16);
+  box-shadow: 0 0 0 4px rgba(94,96,206,0.15);
 }
 
 .modal-actions {
   display: flex;
-  gap: 1.2rem;
-  margin-top: 1.8rem;
+  gap: 1.3rem;
+  margin-top: 2rem;
 }
 
 .btn-primary,
 .btn-secondary {
   flex: 1;
-  padding: 1.1rem;
+  padding: 1.15rem;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 1.08rem;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
@@ -351,19 +401,15 @@
 }
 
 .btn-secondary {
-  background: var(--border-subtle);
+  background: var(--border-light);
   color: var(--text-secondary);
-}
-
-.btn-secondary:hover {
-  background: #e2e8f0;
 }
 
 /* States */
 .loading,
 .no-transactions {
   text-align: center;
-  padding: 3.5rem 1rem;
+  padding: 4rem 1rem;
   color: var(--text-light);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
 }

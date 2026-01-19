@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { createOrder , getOrders , getorderByservice , getOrderById , getAdminDashboard , getServiceDashboard } = require("../controllers/orderController");
+const { createOrder , getOrders , getorderByservice , getMyOrders , getAdminDashboard , getServiceDashboard } = require("../controllers/orderController");
 const authMiddleware = require("../middleware/authMiddleware");
 
-;const authorizeDashboard = require("../middleware/authorizationMiddleware")
+const authorizeDashboard = require("../middleware/authorizationMiddleware")
 router.post("/create", authMiddleware,  createOrder);
-
+router.get("/getMyorders", authMiddleware, getMyOrders);
 
 router.get("/", authMiddleware,  getOrders);
 router.get(
