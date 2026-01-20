@@ -14,7 +14,6 @@ exports.createOrder = async (req, res) => {
 
   try {
     const userId = req.user._id;
-
     const {
       service,
       itemId,
@@ -22,14 +21,17 @@ exports.createOrder = async (req, res) => {
       itemPrice,
       quantity = 1,
       address,
-      pin
+      pin,
+      benefitType
     } = req.body;
+ 
 
-    if (!service || !itemId || !itemName || !itemPrice || !pin) {
+    if (!service || !itemId || !itemName || !itemPrice || !pin ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const user = await User.findById(userId);
+
+    const user = await User.findById(userId).session(session);
     if (!user || !user.pinHash) {
       return res.status(404).json({ message: "User or PIN not found" });
     }
@@ -39,77 +41,106 @@ exports.createOrder = async (req, res) => {
       return res.status(401).json({ message: "Invalid transaction PIN" });
     }
 
-    const totalAmount = itemPrice * quantity;
+    
+    
+    
+    let totalAmount = itemPrice * quantity;
+    let freeFromSubscription = false;
 
-    const wallet = await Wallet.findOneAndUpdate(
-      {
-        userId,
-        balance: { $gte: totalAmount }
-      },
-      {
-        $inc: { balance: -totalAmount }
-      },
-      {
-        new: true,
-        session
+    if (
+      user.subscription &&
+      user.subscription.benefitsUsed[benefitType] < getPlanLimit(user.subscription.plan, benefitType)
+    ) {
+      totalAmount = 0; // free
+      freeFromSubscription = true;
+
+      user.subscription.benefitsUsed[benefitType] =
+        (user.subscription.benefitsUsed[benefitType] || 0) + quantity;
+
+      await user.save({ session });
+    }
+
+    let wallet = null;
+    if (totalAmount >= 0) {
+      wallet = await Wallet.findOneAndUpdate(
+        { userId, balance: { $gte: totalAmount } },
+        { $inc: { balance: -totalAmount } },
+        { new: true, session }
+      );
+
+      if (!wallet) {
+        await session.abortTransaction();
+        return res.status(400).json({ message: "Insufficient wallet balance" });
       }
-    );
-
-    if (!wallet) {
-      return res.status(400).json({ message: "Insufficient balance" });
+    } else {
+      wallet = await Wallet.findOne({ userId }).session(session);
     }
 
     const transaction = await Transaction.create(
-      [{
-        userId,
-        walletId: wallet._id,
-        counterpartyWalletId: "SYSTEM",
-        amount: totalAmount,
-        type: "DEBIT",
-        balanceAfter: wallet.balance,
-        reference: crypto.randomUUID(),
-        service
-      }],
+      [
+        {
+          userId,
+          walletId: wallet._id,
+          counterpartyWalletId: freeFromSubscription ? "SUBSCRIPTION" : "SYSTEM",
+          amount: totalAmount,
+          type: "DEBIT",
+          balanceAfter: wallet.balance,
+          reference: crypto.randomUUID(),
+          service,
+        },
+      ],
       { session }
     );
 
     const order = await Order.create(
-      [{
-        userId,
-        service,
-        itemId,
-        itemName,
-        itemPrice,
-        quantity,
-        totalAmount,
-        transactionId: transaction[0]._id,
-        address
-      }],
+      [
+        {
+          userId,
+          service,
+          itemId,
+          itemName,
+          itemPrice,
+          quantity,
+          totalAmount,
+          transactionId: transaction[0]._id,
+          address,
+        },
+      ],
       { session }
     );
-    
 
     await session.commitTransaction();
     session.endSession();
-    await addRewardPoints(userId, totalAmount);
 
+    if (!freeFromSubscription) {
+      await addRewardPoints(userId, totalAmount);
+    }
 
     res.status(201).json({
-      message: "Order placed successfully",
-      order: order[0]
+      message: freeFromSubscription
+        ? `Order placed using subscription benefit`
+        : "Order placed successfully",
+      order: order[0],
+      walletBalance: wallet.balance,
+      subscriptionUsed: freeFromSubscription,
     });
-
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-
     console.error(error);
     res.status(500).json({
       message: "Error creating order",
-      error: error.message
+      error: error.message,
     });
   }
 };
+
+function getPlanLimit(plan, type) {
+  const limits = {
+    CANTEEN_MONTHLY: { meals: 9, events: 2, books: 2 },
+  };
+  return limits[plan][type] ||   0;
+}
 
 exports.getOrders = async (req, res) => {
   try {

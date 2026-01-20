@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const Wallet = require("../models/Wallet");
 const Transaction = require("../models/Transaction");
+
 async function getRewardsPoints(req, res)   {
   try {
     const userId = req.user._id;
@@ -102,5 +103,5 @@ async function redeemRewardPoints(req, res) {
   } finally {
     session.endSession();
   }
-};
+};  
 module.exports = { addRewardPoints  , getRewardsPoints ,redeemRewardPoints};

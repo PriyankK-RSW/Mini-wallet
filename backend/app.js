@@ -7,6 +7,7 @@ const stripeRoute = require("./routes/stripeRoute.js");
 const webhookRoutes = require("./routes/webhookRoute.js");
 const addTransactionRoute = require("./routes/addTransactionRoute");
 const healthRoutes = require("./routes/healthcheckRoute.js");
+const subscriptionRoute = require("./routes/subscriptionRoute");
 
 app.use(
   cors({
@@ -28,4 +29,5 @@ app.use("/canteen", require("./routes/canteenRoute.js"));
 app.use("/events", require("./routes/eventRoute.js"));
 app.use("/order", require("./routes/orderRoute.js"));
 app.use("/rewards", require("./routes/rewaredData.js"));
+app.use("/wallet" , subscriptionRoute)
 module.exports = app;
