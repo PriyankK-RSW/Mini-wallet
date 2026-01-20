@@ -122,31 +122,37 @@ const getMyWallet = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    // Fetch wallet
     const wallet = await Wallet.findOne({ userId: userIdFromToken });
 
     if (!wallet) {
       return res.status(404).json({ message: "Wallet not found" });
     }
 
-    const user = await User.findById(
-      new mongoose.Types.ObjectId(wallet.userId)
-    ).select("email");
+    // Fetch user with subscription + rewards
+    const user = await User.findById(userIdFromToken).select(
+      "email rewardPoints subscription"
+    );
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     return res.status(200).json({
-      userId: wallet.userId,
+      userId: user._id,
       walletId: wallet.walletId,
       email: user.email,
-      balance: wallet.balance
+      balance: wallet.balance,
+      rewardPoints: user.rewardPoints || 0,
+      subscription: user.subscription || null, // ✅ IMPORTANT
     });
+
   } catch (err) {
     console.error("Get wallet failed:", err);
     return res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 const getTransactions = async (req, res) => {

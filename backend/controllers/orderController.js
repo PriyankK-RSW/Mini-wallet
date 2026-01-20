@@ -137,7 +137,7 @@ exports.createOrder = async (req, res) => {
 
 function getPlanLimit(plan, type) {
   const limits = {
-    CANTEEN_MONTHLY: { meals: 9, events: 2, books: 2 },
+    CANTEEN_MONTHLY: { meals: 9 },
   };
   return limits[plan][type] ||   0;
 }

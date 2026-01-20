@@ -4,12 +4,12 @@ import axios from "axios";
 const API_BASE = "http://localhost:5000";
 
 export const useAuthStore = create((set, get) => ({
-  token: localStorage.getItem("token") || null,
+  token: localStorage.getItem("token"),
   user: null,
   balance: 0,
   transactions: [],
   loading: false,
-
+  
   login: async (email, password) => {
     set({ loading: true });
 
@@ -52,7 +52,10 @@ export const useAuthStore = create((set, get) => ({
           userId: me.userId,
           email: me.email,
           walletId: me.walletId,
-          rewardPoints: me.rewardPoints ,
+          rewardPoints: me.rewardPoints || 0,
+
+
+          subscription: me.subscription || null,
         },
         balance: me.balance || 0,
         transactions: txRes.data.transactions || [],
@@ -67,7 +70,7 @@ export const useAuthStore = create((set, get) => ({
   transfer: async (receiverWalletId, amount, pin) => {
     const idempotencyKey = crypto.randomUUID();
 
-      const res = await axios.post(`${API_BASE}/wallet/transfer`, {
+    const res = await axios.post(`${API_BASE}/wallet/transfer`, {
       receiverWalletId,
       amount: Number(amount),
       pin,

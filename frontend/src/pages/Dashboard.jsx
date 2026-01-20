@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/authStore";
+import GoPro from "../components/GoPro";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
 import { format } from "date-fns";
@@ -24,6 +25,9 @@ export default function Dashboard() {
   const [rewards, setRewards] = useState(0);
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+  const [showGoPro, setShowGoPro] = useState(false);
+
+
 
   useEffect(() => {
     fetchUserData();
@@ -101,6 +105,10 @@ export default function Dashboard() {
       toast.error(err.response?.data?.message || "Failed to redeem points");
     }
   };  
+
+  const isSubscriptionActive =
+  user?.subscription &&
+  new Date(user.subscription.endDate) > new Date();
 
 
   const handleTransfer = async (e) => {
@@ -195,6 +203,28 @@ export default function Dashboard() {
         >
           Redeem Rewards Points
         </button> 
+
+        {isSubscriptionActive ? (
+  <div className="active-subscription-card">
+    <p> 
+      Plan: <strong>{user.subscription.plan}</strong>
+    </p>
+    <p>
+      Valid Till:{" "}
+      {new Date(user.subscription.endDate).toLocaleDateString()}
+    </p>
+    <button className="add-money-btn" disabled>
+      Active
+    </button>
+  </div>
+) : (
+<div>
+
+
+<GoPro show={showGoPro} setShow={setShowGoPro} />
+</div>
+)}
+
 
           <div>
             {showOrders && orders.length > 0 && (

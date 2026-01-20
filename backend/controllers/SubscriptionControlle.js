@@ -21,11 +21,7 @@ exports.subscribeUser = async (req, res) => {
     const { plan, pin } = req.body;
     const user = req.user;
 
-    if(plan != CANTEEN_MONTHLY){
-        return res.status(400).json({message : "Enter Valid Plan"})
-    }
-
-
+  
     if (!plan || !pin) {
       return res.status(400).json({ message: "Plan and PIN are required" });
     }
@@ -115,3 +111,4 @@ exports.subscribeUser = async (req, res) => {
     session.endSession();
   }
 };
+    

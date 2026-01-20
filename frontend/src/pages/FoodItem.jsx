@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import "../Css/foodItems.css";
 import toast from "react-hot-toast";
+import { useAuthStore } from "../store/authStore";
 
 const FoodItem = () => {
+  const { user } = useAuthStore();
+
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [pin, setPin] = useState(""); 
+  const [pin, setPin] = useState("");
   const [selectedFood, setSelectedFood] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+
+  // 🔹 Check if subscription allows free meal
+  const hasFreeMeal =
+    user?.subscription &&
+    user.subscription.plan === "CANTEEN_MONTHLY" &&
+    user.subscription.benefitsUsed?.meals < 60;
+
   useEffect(() => {
     const fetchFoods = async () => {
       try {
@@ -50,7 +61,7 @@ const FoodItem = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           service: "CANTEEN",
@@ -58,15 +69,21 @@ const FoodItem = () => {
           itemName: selectedFood.name,
           itemPrice: selectedFood.price,
           quantity,
-          address ,
-          pin
-        })
+          address,
+          pin,
+          benefitType: "meals", 
+        }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
-      toast.success("Order placed successfully");
+      toast.success(
+        data.subscriptionUsed
+          ? "Free meal used from subscription "
+          : "Order placed successfully"
+      );
+
       closeForm();
     } catch (err) {
       toast.error(err.message);
@@ -87,8 +104,8 @@ const FoodItem = () => {
           <div className="food-card" key={food.id}>
             <img src={food.image} alt={food.name} />
             <h3>{food.name}</h3>
-            <p>₹ {food.price}</p>
-            <p>{food.description}</p>
+              <p>₹ {food.price}</p>
+           <p>{food.description}</p>
             <button onClick={() => openForm(food)}>Buy Now</button>
           </div>
         ))}
@@ -101,7 +118,15 @@ const FoodItem = () => {
 
             <form onSubmit={handleSubmit}>
               <input value={selectedFood.name} disabled />
-              <input value={selectedFood.price} disabled />
+
+              <input
+                value={
+                  hasFreeMeal
+                    ? "₹ 0 (Subscription)"
+                    : `₹ ${selectedFood.price}`
+                }
+                disabled
+              />
 
               <input
                 type="number"
@@ -124,13 +149,18 @@ const FoodItem = () => {
                 required
               />
 
-              <p><strong>Total:</strong> ₹ {selectedFood.price * quantity}</p>
+              <p>
+                <strong>Total:</strong>{" "}
+                {hasFreeMeal ? "₹ 0" : `₹ ${selectedFood.price * quantity}`}
+              </p>
 
               <div className="modal-actions">
                 <button type="submit" disabled={submitting}>
                   {submitting ? "Processing..." : "Place Order"}
                 </button>
-                <button type="button" onClick={closeForm}>Cancel</button>
+                <button type="button" onClick={closeForm}>
+                  Cancel
+                </button>
               </div>
             </form>
           </div>
@@ -141,4 +171,3 @@ const FoodItem = () => {
 };
 
 export default FoodItem;
-  
