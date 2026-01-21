@@ -10,7 +10,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "../stripe";
 import StripeCheckout from "../components/StripeCheckout";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios"
 function getPlanLimit(plan, type = "meals") {
   const limits = {
     CANTEEN_MONTHLY: { meals: 30 }
@@ -36,6 +36,11 @@ export default function Dashboard() {
   const [rewards, setRewards] = useState(0);
   const [monthlyUsed, setMonthlyUsed] = useState(0);    
   const [showGoPro, setShowGoPro] = useState(false);
+  const [walletId, setWalletId] = useState("");
+  const [points, setPoints] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showGiftpoints , setshowGiftpoints] = useState("false")
+
 
   const isSubscriptionActive =
     user?.subscription &&
@@ -158,7 +163,34 @@ export default function Dashboard() {
       toast.error("Failed to start payment");
     }
   };
+  const handleGift = async () => {
+    if (!walletId || !points) {
+      return toast.error("Enter wallet ID and points");
+    }
 
+    try {
+      setLoading(true);
+
+      const res = await axios.post(
+        "http://localhost:5000/rewards/giftpoints",
+        {
+          receiverWalletId: walletId,
+          amount: Number(points),
+        }
+      );
+
+      toast.success(res.data.message);
+      setWalletId("");
+      setPoints("");
+      setshowGiftpoints("false")
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to gift points");
+      setshowGiftpoints("false")
+      console.log(err)
+    } finally {
+      setLoading(false);
+    }
+  };
   const toggleVisibility = () => setIsHidden((p) => !p);
 
   return (
@@ -189,7 +221,7 @@ export default function Dashboard() {
           <p className="rewards-line">Reward Points: {rewards}</p>
           <p className="wallet-id">Wallet ID: {user?.walletId || "Loading..."}</p>
 
-          {/* Subscription / Plan Status */}
+         
           {isSubscriptionActive ? (
             <div className="subscription-info">
               <div className="plan-details">
@@ -359,7 +391,35 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+      <h3>🎁 Gift Reward Points</h3>
+         {showGiftpoints && (
+          <div>
+              <input
+        type="text"
+        className="input"
+        placeholder="Receiver Wallet ID"
+        value={walletId}
+        onChange={(e) => setWalletId(e.target.value)}
+      />
 
+      <input
+        type="number"
+        className="input"
+        placeholder="Points to Gift"
+        value={points}
+        onChange={(e) => setPoints(e.target.value)}
+      />
+
+      <button  className="btn primary "  onClick={handleGift} disabled={loading}>
+        {loading ? "Sending..." : "Send Points"}
+      </button>
+          </div>
+          )}
+           <div className="gift-box">
+
+
+    
+    </div>
         {/* Services */}
         <section className="services-section">
           <h2>Services</h2>

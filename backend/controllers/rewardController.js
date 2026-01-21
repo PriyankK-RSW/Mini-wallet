@@ -19,6 +19,61 @@ async function getRewardsPoints(req, res)   {
   }
 };
 
+ async function giftPoints (req, res)  {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const senderId = req.user._id;
+    const { receiverWalletId, amount } = req.body;
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ message: "Invalid amount" });
+    }
+
+    const sender = await User.findById(senderId).session(session);
+    if (!sender) return res.status(404).json({ message: "Sender not found" });
+
+    if (sender.rewardsPoints < amount) {
+      return res.status(400).json({ message: "Insufficient reward points" });
+    }
+
+    const receiverWallet = await Wallet.findOne({
+      walletId: receiverWalletId,
+    }).session(session);
+
+    if (!receiverWallet)
+      return res.status(404).json({ message: "Receiver wallet not found" });
+
+    const receiver = await User.findById(receiverWallet.userId).session(session);
+    if (!receiver)
+      return res.status(404).json({ message: "Receiver not found" });
+
+    sender.rewardsPoints -= amount;
+    receiver.rewardsPoints = (receiver.rewardsPoints || 0) + amount;
+
+    await sender.save({ session });
+    await receiver.save({ session });
+
+    await session.commitTransaction();
+
+    return res.status(200).json({
+      message: "Reward points gifted successfully",
+      giftedPoints: amount,
+      to: receiver.email,
+      remainingPoints: sender.rewardsPoints,
+    });
+
+  } catch (error) {
+    await session.abortTransaction();
+    return res.status(500).json({
+      message: "Failed to gift reward points",
+      error: error.message,
+    });
+  } finally {
+    session.endSession();
+  }
+};
 
 async function addRewardPoints(userId, amount) {
 
@@ -42,7 +97,7 @@ async function redeemRewardPoints(req, res) {
     const userId = req.user._id;
 
     if (!pointsToRedeem || pointsToRedeem <= 0) {
-      return res.status(400).json({ message: "Invalid points amount" });
+      return res.status(400).json({ message: "" });
     }
 
     session.startTransaction();
@@ -104,4 +159,4 @@ async function redeemRewardPoints(req, res) {
     session.endSession();
   }
 };  
-module.exports = { addRewardPoints  , getRewardsPoints ,redeemRewardPoints};
+module.exports = { addRewardPoints  , getRewardsPoints ,redeemRewardPoints ,giftPoints};
