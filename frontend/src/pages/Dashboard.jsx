@@ -291,6 +291,7 @@ export default function Dashboard() {
               <form onSubmit={handleTransfer}>
                 <input
                   type="text"
+                  className="input"
                   placeholder="Receiver Wallet ID"
                   value={receiver}
                   onChange={(e) => setReceiver(e.target.value)}
@@ -298,6 +299,7 @@ export default function Dashboard() {
                 />
                 <input
                   type="number"
+                  className="input"
                   placeholder="Amount"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
@@ -306,6 +308,7 @@ export default function Dashboard() {
                 />
                 <input
                   type="password"
+                  className="input"
                   placeholder="PIN (4 digits)"
                   value={pin}
                   onChange={(e) => setPin(e.target.value)}
@@ -335,6 +338,7 @@ export default function Dashboard() {
                     placeholder="Amount (₹)"
                     value={topupAmount}
                     onChange={(e) => setTopupAmount(e.target.value)}
+                    className="input"
                   />
                   <div className="modal-buttons">
                     <button onClick={handleAddMoney} className="btn primary">Proceed</button>

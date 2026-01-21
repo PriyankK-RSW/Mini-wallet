@@ -1,6 +1,3 @@
-/* ============================================
-   MyWallet Dashboard - Modern & Impactful UI
-   ============================================ */
 
 :root {
   --primary: #5e60ce;
@@ -127,7 +124,7 @@
 }
 
 .blurred {
-  filter: blur(12px);
+  filter: blur(9px);
   user-select: none;
   pointer-events: none;
 }
@@ -302,7 +299,6 @@
   border-color: var(--border-light);
 }
 
-/* Send Money (prominent CTA) */
 .send-money-btn {
   background: linear-gradient(90deg, var(--primary), var(--primary-light));
   color: white;
