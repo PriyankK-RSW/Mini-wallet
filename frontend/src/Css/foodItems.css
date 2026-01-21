@@ -18,7 +18,64 @@
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.10);
   --transition: all 0.24s ease;
 }
+.subscription-notice {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
 
+.free-meal-info {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.limit-reached {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.price-display {
+  margin: 1rem 0;
+}
+
+.disabled-input {
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.free-price {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.total-line {
+  margin: 1.5rem 0;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-free {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.total-normal {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.benefit-note {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
 .library-container {
   padding: 1.5rem 1rem;
   max-width: 1200px;

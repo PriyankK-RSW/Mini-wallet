@@ -122,14 +122,12 @@ const getMyWallet = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // Fetch wallet
     const wallet = await Wallet.findOne({ userId: userIdFromToken });
 
     if (!wallet) {
       return res.status(404).json({ message: "Wallet not found" });
     }
 
-    // Fetch user with subscription + rewards
     const user = await User.findById(userIdFromToken).select(
       "email rewardPoints subscription"
     );
@@ -144,7 +142,7 @@ const getMyWallet = async (req, res) => {
       email: user.email,
       balance: wallet.balance,
       rewardPoints: user.rewardPoints || 0,
-      subscription: user.subscription || null, // ✅ IMPORTANT
+      subscription: user.subscription || null,
     });
 
   } catch (err) {

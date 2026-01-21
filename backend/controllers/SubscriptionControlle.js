@@ -111,4 +111,43 @@ exports.subscribeUser = async (req, res) => {
     session.endSession();
   }
 };
-    
+
+exports.getUsageInfo = async (req, res) => {
+  try {
+    const user = req.user;
+    const { benefitType } = req.params; 
+    if (!user.subscription) {
+      return res.status(200).json({
+        used: 0,
+        limit: 0,
+        resetDate: null
+      });
+    }
+
+    const PLAN_LIMITS = {
+      CANTEEN_MONTHLY: { meals: 60, events: 0, books: 0 },
+      EVENTS_MONTHLY: { meals: 0, events: 15, books: 0 },
+      LIBRARY_MONTHLY: { meals: 0, events: 0, books: 100 }
+    };
+
+    const plan = user.subscription.plan;
+    const limits = PLAN_LIMITS[plan];
+
+    if (!limits || limits[benefitType] === undefined) {
+      return res.status(400).json({ message: "Invalid benefit type" });
+    }
+
+    const used = user.subscription.benefitsUsed?.[benefitType] || 0;
+    const limit = limits[benefitType];
+    const resetDate = user.subscription.endDate;
+
+    return res.status(200).json({
+      used,
+      limit,
+      resetDate
+    });
+  } catch (err) {
+    console.error("Usage info error:", err);
+    res.status(500).json({ message: "Failed to fetch usage info" });
+  }
+};
