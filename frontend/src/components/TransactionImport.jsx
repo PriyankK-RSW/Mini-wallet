@@ -97,7 +97,7 @@ export default function TransactionImport({ onSuccess }) {
         </div>
 
         <div className="modal-body">
-          <p style={{ marginBottom: "16px", color: "#666" }}>
+          <p style={{ marginBottom: "16px", color: "#656565ff" }}>
             Upload a CSV file with columns: <strong>userId, amount, type, counterpartyWalletId (optional), createdAt (optional)</strong>
           </p>
 

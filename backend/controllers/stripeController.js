@@ -1,4 +1,3 @@
-// controllers/stripeController.js
 const mongoose = require("mongoose");
 const Wallet = require("../models/Wallet");
 const Transaction = require("../models/Transaction");
@@ -23,7 +22,7 @@ exports.createPaymentIntent = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Convert INR to paise
+      amount: Math.round(amount * 100),
       currency: "inr",
       automatic_payment_methods: { enabled: true },
       metadata: {
@@ -84,7 +83,7 @@ exports.stripeWebhook = async (req, res) => {
     console.log("Payment succeeded");
 
     const userId = intent.metadata.userId;
-    const amount = intent.amount / 100; // Convert paise back to INR
+    const amount = intent.amount / 100; 
 
     if (!userId || !amount) {
       console.error("Missing userId or amount in metadata");
@@ -114,7 +113,7 @@ exports.stripeWebhook = async (req, res) => {
             type: "CREDIT",
             balanceAfter: wallet.balance,
             reference,
-            stripeIntentId: intent.id, // To prevent duplicates if webhook retries
+            stripeIntentId: intent.id,
           },
         ],
         { session }
@@ -124,8 +123,7 @@ exports.stripeWebhook = async (req, res) => {
     } catch (err) {
       await session.abortTransaction();
       console.error("Webhook processing error:", err.message);
-      // Still return 200 to Stripe, but log error
-    } finally {
+     } finally {
       session.endSession();
     }
   }
@@ -137,6 +135,5 @@ exports.stripeWebhook = async (req, res) => {
     const intent = event.data.object;
     console.log("Payment canceled for intent");
   } 
-  // Always acknowledge receipt to Stripe
   res.status(200).json({ received: true });
 };
