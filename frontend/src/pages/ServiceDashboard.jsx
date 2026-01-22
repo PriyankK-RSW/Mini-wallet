@@ -6,6 +6,7 @@ import "../Css/ServiceDashboard.css";
 export default function ServiceDashboard({ service }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const API_BASE =  import.meta.env.VITE_BASE_URL;
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -16,7 +17,7 @@ export default function ServiceDashboard({ service }) {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/order/Dashboard/service`, {
+        const res = await fetch(`${API_BASE}/order/Dashboard/service`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

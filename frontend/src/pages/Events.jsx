@@ -10,12 +10,13 @@ const Events = () => {
   const [quantity, setQuantity] = useState(1);
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+  const API_BASE =  import.meta.env.VITE_BASE_URL;
+
   const [pin, setPin] = useState(""); 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch(`${BASE_URL}events/events`);
+        const res = await fetch(`https://mini-wallet-production-8712.up.railway.app/events/events`);
         if (!res.ok) throw new Error("Events service unavailable");
 
         const data = await res.json();

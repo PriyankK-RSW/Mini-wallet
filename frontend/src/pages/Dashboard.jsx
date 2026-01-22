@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import GoPro from "../components/GoPro";
@@ -18,10 +17,11 @@ function getPlanLimit(plan, type = "meals") {
   return limits[plan]?.[type] ?? Infinity;
 }
 
+
 export default function Dashboard() {
   const { user, balance, transactions, fetchUserData, transfer, logout } = useAuthStore();
   const navigate = useNavigate();
-  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+  const API_BASE =  import.meta.env.VITE_BASE_URL;
 
   const [showTransfer, setShowTransfer] = useState(false);
   const [receiver, setReceiver] = useState("");
@@ -68,7 +68,7 @@ export default function Dashboard() {
 
   const fetchRewardsPoints = async () => {
     try {
-      const res = await fetch(`${BASE_URL}rewards/rewardsPoints`, {
+      const res = await fetch(`${API_BASE}/rewards/rewardsPoints`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       const data = await res.json();
@@ -81,7 +81,7 @@ export default function Dashboard() {
   // Fetch user's orders
   const fetchMyorderData = async () => {
     try {
-      const res = await fetch(`${BASE_URL}order/getMyorders`, {
+      const res = await fetch(`${API_BASE}/order/getMyorders`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       const data = await res.json();
@@ -95,7 +95,7 @@ export default function Dashboard() {
     if (!isSubscriptionActive || !currentPlan) return;
 
     try {
-      const res = await fetch(`${BASE_URL}wallet/usage/meals`, {
+      const res = await fetch(`${API_BASE}/wallet/usage/meals`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       if (!res.ok) throw new Error("Usage fetch failed");
@@ -116,7 +116,7 @@ export default function Dashboard() {
 
   const redeemRewardsPoints = async () => {
     try {
-      const res = await fetch(`${BASE_URL}rewards/redeemPoints`, {
+      const res = await fetch(`${API_BASE}/rewards/redeempoints`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +149,7 @@ export default function Dashboard() {
 
   const handleAddMoney = async () => {
     try {
-      const res = await fetch(`${BASE_URL}stripe/add-money`, {
+      const res = await fetch(`${API_BASE}/stripe/add-money/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -172,7 +172,7 @@ export default function Dashboard() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/rewards/giftpoints",
+        `${API_BASE}/rewards/giftpoints`,
         {
           receiverWalletId: walletId,
           amount: Number(points),
@@ -310,12 +310,10 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Send Money Button */}
         <button onClick={() => setShowTransfer(true)} className="send-money-btn">
           Send Money
         </button>
 
-        {/* Transfer Modal */}
         {showTransfer && (
           <div className="modal-overlay">
             <div className="modal-card">
@@ -391,7 +389,7 @@ export default function Dashboard() {
             </div>
           </div>
         )}
-      <h3>🎁 Gift Reward Points</h3>
+      <h3>Gift Reward Points</h3>
          {showGiftpoints && (
           <div>
               <input

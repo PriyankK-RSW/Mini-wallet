@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE =  import.meta.env.VITE_BASE_URL;
+
 
 export const useAuthStore = create((set, get) => ({
   token: localStorage.getItem("token"),

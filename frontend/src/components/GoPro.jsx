@@ -8,8 +8,10 @@ const PLANS = [
   { key: "CANTEEN_MONTHLY", name: "Canteen Plan", price: 1000 }
 ];
 
+
 export default function GoPro() {
   const { user, fetchUserData } = useAuthStore();
+  const API_BASE =  import.meta.env.VITE_BASE_URL;
 
   const [showModal, setShowModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -25,7 +27,7 @@ export default function GoPro() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/wallet/subscribe",
+        `${API_BASE}/wallet/subscribe`,
         {
           plan: selectedPlan,
           pin,

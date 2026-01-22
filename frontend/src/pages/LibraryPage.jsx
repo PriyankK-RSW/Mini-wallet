@@ -10,12 +10,12 @@ const [selectedBook, setSelectedBook] = useState(null);
 const [quantity, setQuantity] = useState(1);
 const [address, setAddress] = useState("");   
 const [submitting, setSubmitting] = useState(false);
+const API_BASE =  import.meta.env.VITE_BASE_URL;
 
-  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const res = await fetch(`${BASE_URL}library/books`);
+        const res = await fetch(`${API_BASE}/library/books`);
         if (!res.ok) throw new Error("Library service unavailable");
 
         const data = await res.json();

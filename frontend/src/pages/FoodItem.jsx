@@ -25,7 +25,7 @@ const FoodItem = () => {
   const [monthlyUsed, setMonthlyUsed] = useState(0);
   const [usageLoading, setUsageLoading] = useState(true);
 
-  const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+  const API_BASE =  import.meta.env.VITE_BASE_URL;
 
   const isSubscriptionActive =
     user?.subscription &&
@@ -38,7 +38,7 @@ const FoodItem = () => {
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const res = await fetch(`${BASE_URL}canteen/foods`);
+        const res = await fetch(`${API_BASE}/canteen/foods`);
         if (!res.ok) throw new Error("Canteen service unavailable");
         const data = await res.json();
         setFoods(data);

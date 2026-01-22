@@ -6,6 +6,8 @@ import "../Css/AdminDashboard.css";
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const API_BASE =  import.meta.env.VITE_BASE_URL;
+
 const logout = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
@@ -13,7 +15,7 @@ const logout = () => {
   useEffect(() => { 
     const fetchAdminDashboard = async () => {
       try {
-        const res = await fetch("http://localhost:5000/order/Dashboard/admin", {
+        const res = await fetch(`${API_BASE}/order/Dashboard/admin`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
