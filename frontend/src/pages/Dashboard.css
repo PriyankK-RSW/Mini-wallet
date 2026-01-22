@@ -1,530 +1,529 @@
 
-:root {
-  --primary: #5e60ce;
-  --primary-dark: #4d4fc2;
-  --primary-light: #787aff;
-  --success: #00c853;
-  --success-dark: #00a843;
-  --danger: #ff5252;
-  --danger-dark: #e63946;
-  --warning: #ff9f1c;
-  --text-dark: #0f172a;
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-light: #64748b;
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface-2: #f9fbff;
-  --border: #e2e8f0;
-  --border-light: #f1f5f9;
-  --radius: 16px;
-  --radius-sm: 12px;
-  --radius-xs: 8px;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-  --shadow-md: 0 6px 20px rgba(0,0,0,0.09);
-  --shadow-lg: 0 12px 36px rgba(0,0,0,0.12);
-  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.dashboard-container {
-  min-height: 100vh;
-  background: var(--bg);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: var(--text-primary);
-}
-
-/* ── Header ── */
-.dashboard-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border-light);
-  padding: 1.1rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  backdrop-filter: blur(12px);
-}
-
-.header-content {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.app-title {
-  font-size: clamp(1.8rem, 5vw, 2.2rem);
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  background: linear-gradient(90deg, var(--primary), var(--primary-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.logout-btn {
-  padding: 0.65rem 1.5rem;
-  border-radius: 50px;
-  background: var(--danger);
-  color: white;
-  border: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.logout-btn:hover {
-  background: var(--danger-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
-}
-
-/* ── Main Content ── */
-.dashboard-main {
-  max-width: 1280px;
-  margin: 2.5rem auto;
-  padding: 0 1.25rem;
-  display: grid;
-  gap: 2.5rem;
-}
-
-/* Balance Card ── Hero Section */
-.balance-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 2.5rem 2rem;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-
-.balance-label {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 1rem;
-}
-
-.balance-amount {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  font-size: clamp(2.8rem, 8vw, 3.8rem);
-  font-weight: 800;
-  color: var(--text-dark);
-  letter-spacing: -1.5px;
-  margin-bottom: 1.6rem;
-}
-
-.blurred {
-  filter: blur(9px);
-  user-select: none;
-  pointer-events: none;
-}
-
-.eye-toggle {
-  background: rgba(94, 96, 206, 0.1);
-  border: none;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: var(--transition);
-  color: var(--primary);
-}
-
-.eye-toggle:hover {
-  background: rgba(94, 96, 206, 0.2);
-  transform: scale(1.08);
-}
-
-.wallet-id {
-  color: var(--text-light);
-  font-size: 1rem;
-  font-family: 'Segoe UI', monospace;
-  letter-spacing: 0.5px;
-  margin: 1.2rem 0 2.2rem;
-}
-
-/* Action Buttons Row */
-.action-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1.8rem 0 2.4rem;
-}
-
-.btn {
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: var(--shadow-sm);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn.add-money {
-  background: var(--success);
-  color: white;
-  box-shadow: 0 6px 20px rgba(0, 200, 83, 0.3);
-}
-
-.btn.add-money:hover {
-  background: var(--success-dark);
-  box-shadow: 0 12px 28px rgba(0, 200, 83, 0.4);
-}
-
-.btn.my-orders {
-  background: var(--primary);
-  color: white;
-  box-shadow: 0 6px 20px rgba(94, 96, 206, 0.25);
-}
-
-.btn.my-orders:hover {
-  background: var(--primary-dark);
-}
-
-.btn.redeem {
-  background: #f59e0b;
-  color: white;
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
-}
-
-/* Plan / Subscription Info */
-.subscription-info {
-  margin: 1.8rem 0;
-  padding: 1.4rem;
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border-radius: var(--radius-sm);
-  border: 1px solid #bae6fd;
-}
-
-.limit-status {
-  margin: 1.2rem 0;
-  padding: 1rem;
-  background: white;
-  border-radius: var(--radius-xs);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.limit-status.limit-reached {
-  background: #fef2f2;
-  border-left: 4px solid var(--danger);
-}
-
-.progress-text {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.remaining {
-  color: var(--success);
-  font-weight: 700;
-}
-
-.limit-warning {
-  color: var(--danger);
-  font-weight: 600;
-  margin-top: 0.5rem;
-}
-
-.status-btn.active {
-  background: var(--success);
-  color: white;
-  border: none;
-  padding: 0.6rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 600;
-  margin-top: 1rem;
-}
-.gift-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  max-width: 400px;
-  margin-top: 20px;
-}
-
-.gift-box h3 {
-  margin-bottom: 12px;
-}
-
-.gift-box input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.gift-box button {
-  width: 100%;
-  padding: 10px;
-  background: #4f46e5;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* Services Grid */
-.services-section h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 1.6rem;
-  color: var(--text-dark);
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
-}
-
-.service-card {
-  background: var(--surface);
-  border-radius: var(--radius-sm);
-  padding: 2rem 1.2rem;
-  text-align: center;
-  border: 2px solid var(--border-light);
-  transition: var(--transition);
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-}
-
-.service-card:hover {
-  border-color: var(--primary-light);
-  color: var(--primary);
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-md);
-}
-
-.service-card.disabled {
-  opacity: 0.5;
-  background: #f8f9fa;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.service-card.disabled:hover {
-  border-color: var(--border-light);
-}
-
-.send-money-btn {
-  background: linear-gradient(90deg, var(--primary), var(--primary-light));
-  color: white;
-  border: none;
-  padding: 1.4rem;
-  border-radius: var(--radius);
-  font-size: 1.2rem;
-  font-weight: 700;
-  cursor: pointer;
-  width: 100%;
-  box-shadow: 0 8px 24px rgba(94, 96, 206, 0.35);
-  transition: var(--transition);
-  margin: 2rem 0;
-}
-
-.send-money-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 16px 40px rgba(94, 96, 206, 0.45);
-}
-
-/* Transactions */
-.transactions-section {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 2.2rem;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border);
-}
-
-.section-title {
-  font-size: 1.7rem;
-  font-weight: 700;
-  margin-bottom: 1.8rem;
-}
-
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.3rem 0;
-  border-bottom: 1px solid var(--border-light);
-  transition: var(--transition);
-}
-
-.transaction-item:hover {
-  background: rgba(94, 96, 206, 0.03);
-}
-
-.tx-desc {
-  font-weight: 600;
-  font-size: 1.05rem;
-}
-
-.tx-meta {
-  margin-top: 0.4rem;
-  font-size: 0.9rem;
-  color: var(--text-light);
-}
-
-.tx-amount {
-  font-size: 1.4rem;
-  font-weight: 800;
-  min-width: 110px;
-  text-align: right;
-}
-
-.debit  { color: var(--danger); }
-.credit { color: var(--success); }
-
-/* Modals */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  backdrop-filter: blur(8px);
-}
-
-.modal-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  width: 90%;
-  max-width: 480px;
-  padding: 2.6rem 2.2rem;
-  box-shadow: var(--shadow-lg);
-  max-height: 92vh;
-  overflow-y: auto;
-}
-
-.modal-title {
-  font-size: 1.9rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--text-dark);
-}
-
-.input-field {
-  width: 100%;
-  padding: 1.2rem 1.5rem;
-  margin-bottom: 1.6rem;
-  border: 2px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 1.05rem;
-  transition: var(--transition);
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(94, 96, 206, 0.18);
-}
-
-.modal-actions {
-  display: flex;
-  gap: 1.2rem;
-  margin-top: 2.2rem;
-}
-
-.btn-primary,
-.btn-secondary {
-  flex: 1;
-  padding: 1.2rem;
-  border-radius: 50px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  border: none;
-}
-
-.btn-primary:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  background: var(--border-light);
-  color: var(--text-secondary);
-  border: none;
-}
-
-.btn-secondary:hover {
-  background: #e2e8f0;
-}
-
-/* Orders Table */
-.orders-box {
-  margin-top: 2rem;
-  background: var(--surface-2);
-  border-radius: var(--radius);
-  padding: 1.8rem;
-  border: 1px solid var(--border);
-}
-
-.orders-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.orders-table th,
-.orders-table td {
-  padding: 1.1rem 1.3rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border-light);
-}
-
-.orders-table thead {
-  background: rgba(94, 96, 206, 0.08);
-}
-
-.orders-table th {
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.6px;
-}
-
-.orders-table tbody tr:hover {
-  background: rgba(94, 96, 206, 0.04);
-}
-
-/* Misc */
-.loading,
-.no-transactions,
-.no-data {
-  text-align: center;
-  padding: 5rem 1rem;
-  color: var(--text-light);
-  font-size: 1.25rem;
-  font-weight: 500;
-}
+  :root {
+    --primary: #5e60ce;
+    --primary-dark: #4d4fc2;
+    --primary-light: #787aff;
+    --success: #00c853;
+    --success-dark: #00a843;
+    --danger: #ff5252;
+    --danger-dark: #e63946;
+    --warning: #ff9f1c;
+    --text-dark: #0f172a;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-light: #64748b;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-2: #f9fbff;
+    --border: #e2e8f0;
+    --border-light: #f1f5f9;
+    --radius: 16px;
+    --radius-sm: 12px;
+    --radius-xs: 8px;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-md: 0 6px 20px rgba(0,0,0,0.09);
+    --shadow-lg: 0 12px 36px rgba(0,0,0,0.12);
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dashboard-container {
+    min-height: 100vh;
+    background: var(--bg);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-primary);
+  }
+
+  /* ── Header ── */
+  .dashboard-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-light);
+    padding: 1.1rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+  }
+
+  .header-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .app-title {
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    -webkit-text-fill-color: transparent;
+  }
+
+  .logout-btn {
+    padding: 0.65rem 1.5rem;
+    border-radius: 50px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .logout-btn:hover {
+    background: var(--danger-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+  }
+
+  /* ── Main Content ── */
+  .dashboard-main {
+    max-width: 1280px;
+    margin: 2.5rem auto;
+    padding: 0 1.25rem;
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  /* Balance Card ── Hero Section */
+  .balance-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .balance-label {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .balance-amount {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: clamp(2.8rem, 8vw, 3.8rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -1.5px;
+    margin-bottom: 1.6rem;
+  }
+
+  .blurred {
+    filter: blur(9px);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .eye-toggle {
+    background: rgba(94, 96, 206, 0.1);
+    border: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--primary);
+  }
+
+  .eye-toggle:hover {
+    background: rgba(94, 96, 206, 0.2);
+    transform: scale(1.08);
+  }
+
+  .wallet-id {
+    color: var(--text-light);
+    font-size: 1rem;
+    font-family: 'Segoe UI', monospace;
+    letter-spacing: 0.5px;
+    margin: 1.2rem 0 2.2rem;
+  }
+
+  /* Action Buttons Row */
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.8rem 0 2.4rem;
+  }
+
+  .btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn.add-money {
+    background: var(--success);
+    color: white;
+    box-shadow: 0 6px 20px rgba(0, 200, 83, 0.3);
+  }
+
+  .btn.add-money:hover {
+    background: var(--success-dark);
+    box-shadow: 0 12px 28px rgba(0, 200, 83, 0.4);
+  }
+
+  .btn.my-orders {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 6px 20px rgba(94, 96, 206, 0.25);
+  }
+
+  .btn.my-orders:hover {
+    background: var(--primary-dark);
+  }
+
+  .btn.redeem {
+    background: #f59e0b;
+    color: white;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+  }
+
+  /* Plan / Subscription Info */
+  .subscription-info {
+    margin: 1.8rem 0;
+    padding: 1.4rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: var(--radius-sm);
+    border: 1px solid #bae6fd;
+  }
+
+  .limit-status {
+    margin: 1.2rem 0;
+    padding: 1rem;
+    background: white;
+    border-radius: var(--radius-xs);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .limit-status.limit-reached {
+    background: #fef2f2;
+    border-left: 4px solid var(--danger);
+  }
+
+  .progress-text {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .remaining {
+    color: var(--success);
+    font-weight: 700;
+  }
+
+  .limit-warning {
+    color: var(--danger);
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  .status-btn.active {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+  .gift-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin-top: 20px;
+  }
+
+  .gift-box h3 {
+    margin-bottom: 12px;
+  }
+
+  .gift-box input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .gift-box button {
+    width: 100%;
+    padding: 10px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  /* Services Grid */
+  .services-section h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.6rem;
+    color: var(--text-dark);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 2rem 1.2rem;
+    text-align: center;
+    border: 2px solid var(--border-light);
+    transition: var(--transition);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+  }
+
+  .service-card:hover {
+    border-color: var(--primary-light);
+    color: var(--primary);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .service-card.disabled {
+    opacity: 0.5;
+    background: #f8f9fa;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .service-card.disabled:hover {
+    border-color: var(--border-light);
+  }
+
+  .send-money-btn {
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    padding: 1.4rem;
+    border-radius: var(--radius);
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 8px 24px rgba(94, 96, 206, 0.35);
+    transition: var(--transition);
+    margin: 2rem 0;
+  }
+
+  .send-money-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(94, 96, 206, 0.45);
+  }
+
+  /* Transactions */
+  .transactions-section {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 2.2rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+  }
+
+  .section-title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 1.8rem;
+  }
+
+  .transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.3rem 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  .transaction-item:hover {
+    background: rgba(94, 96, 206, 0.03);
+  }
+
+  .tx-desc {
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+
+  .tx-meta {
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+
+  .tx-amount {
+    font-size: 1.4rem;
+    font-weight: 800;
+    min-width: 110px;
+    text-align: right;
+  }
+
+  .debit  { color: var(--danger); }
+  .credit { color: var(--success); }
+
+  /* Modals */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(8px);
+  }
+
+  .modal-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 480px;
+    padding: 2.6rem 2.2rem;
+    box-shadow: var(--shadow-lg);
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .modal-title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-dark);
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.6rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 1.05rem;
+    transition: var(--transition);
+  }
+
+  .input-field:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(94, 96, 206, 0.18);
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 2.2rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    flex: 1;
+    padding: 1.2rem;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: var(--border-light);
+    color: var(--text-secondary);
+    border: none;
+  }
+
+  .btn-secondary:hover {
+    background: #e2e8f0;
+  }
+
+  /* Orders Table */
+  .orders-box {
+    margin-top: 2rem;
+    background: var(--surface-2);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    border: 1px solid var(--border);
+  }
+
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 1.1rem 1.3rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .orders-table thead {
+    background: rgba(94, 96, 206, 0.08);
+  }
+
+  .orders-table th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.6px;
+  }
+
+  .orders-table tbody tr:hover {
+    background: rgba(94, 96, 206, 0.04);
+  }
+
+  /* Misc */
+  .loading,
+  .no-transactions,
+  .no-data {
+    text-align: center;
+    padding: 5rem 1rem;
+    color: var(--text-light);
+    font-size: 1.25rem;
+    font-weight: 500;
+  }

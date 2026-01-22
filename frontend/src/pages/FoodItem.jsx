@@ -60,7 +60,7 @@ const FoodItem = () => {
 
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`${BASE_URL}wallet/usage/meals`, {
+        const res = await fetch(`${API_BASE}/wallet/usage/meals`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

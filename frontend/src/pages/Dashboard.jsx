@@ -194,281 +194,281 @@ export default function Dashboard() {
   const toggleVisibility = () => setIsHidden((p) => !p);
 
   return (
-    <div className="dashboard-container">
-      <header className="dashboard-header">
-        <div className="header-content">
-          <h1 className="app-title">MyWallet</h1>
-          <button onClick={logout} className="logout-btn">
-            Logout
-          </button>
-        </div>
-      </header>
-
-      <main className="dashboard-main">
-        <div className="balance-card">
-          <p className="balance-label">Available Balance</p>
-          <div className="balance-amount">
-            {balance === null ? (
-              <span className="loading">Loading...</span>
-            ) : (
-              <span className={isHidden ? "blurred" : ""}>₹{balance}</span>
-            )}
-            <button className="eye-toggle" onClick={toggleVisibility} aria-label={isHidden ? "Show" : "Hide"}>
-              {isHidden ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-
-          <p className="rewards-line">Reward Points: {rewards}</p>
-          <p className="wallet-id">Wallet ID: {user?.walletId || "Loading..."}</p>
-
-         
-          {isSubscriptionActive ? (
-            <div className="subscription-info">
-              <div className="plan-details">
-                <strong>{currentPlan?.replace("_", " ")}</strong>
-                <span className="valid-until">
-                  Valid till {new Date(user.subscription.endDate).toLocaleDateString()}
-                </span>
+          <div className="dashboard-container">
+            <header className="dashboard-header">
+              <div className="header-content">
+                <h1 className="app-title">MyWallet</h1>
+                <button onClick={logout} className="logout-btn">
+                  Logout
+                </button>
               </div>
+            </header>
 
-              {currentPlan === "CANTEEN_MONTHLY" && (
-                <div className={`limit-status ${limitReached ? "limit-reached" : ""}`}>
-                  <div className="progress-text">
-                    <span>Meals this month: {monthlyUsed} / {mealLimit}</span>
-                  </div>
-                  {limitReached ? (
-                    <div className="limit-warning">
-                      Monthly limit reached • Regular purchase needed
-                    </div>
+            <main className="dashboard-main">
+              <div className="balance-card">
+                <p className="balance-label">Available Balance</p>
+                <div className="balance-amount">
+                  {balance === null ? (
+                    <span className="loading">Loading...</span>
                   ) : (
-                    <div className="remaining">
-                      {mealLimit - monthlyUsed} meals remaining
-                    </div>
+                    <span className={isHidden ? "blurred" : ""}>₹{balance}</span>
                   )}
-                </div>
-              )}
-
-              <button className="status-btn active" disabled>
-                Active
-              </button>
-            </div>
-          ) : (
-            <div className="no-subscription">
-              <GoPro show={showGoPro} setShow={setShowGoPro} />
-            </div>
-          )}
-
-          <div className="action-buttons">
-            <button onClick={() => setShowAddMoney(true)} className="btn add-money">
-              Add Money
-            </button>
-            <button
-              onClick={() => {
-                fetchMyorderData();
-                setShowOrders(true);
-              }}
-              className="btn my-orders"
-            >
-              My Orders
-            </button>
-            <button onClick={redeemRewardsPoints} className="btn redeem">
-              Redeem Rewards
-            </button>
-          </div>
-
-          {showOrders && orders.length > 0 && (
-            <div className="orders-modal">
-              <div className="modal-header">
-                <h3>My Orders</h3>
-                <button onClick={() => setShowOrders(false)} className="close-btn">×</button>
-              </div>
-              <table className="orders-table">
-                <thead>
-                  <tr>
-                    <th>Service</th>
-                    <th>Item</th>
-                    <th>Qty</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map((order) => (
-                    <tr key={order._id}>
-                      <td>{order.service}</td>
-                      <td>{order.itemName}</td>
-                      <td>{order.quantity}</td>
-                      <td>₹{order.totalAmount}</td>
-                      <td>{order.status}</td>
-                      <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-
-        <button onClick={() => setShowTransfer(true)} className="send-money-btn">
-          Send Money
-        </button>
-
-        {showTransfer && (
-          <div className="modal-overlay">
-            <div className="modal-card">
-              <h3>Send Money</h3>
-              <form onSubmit={handleTransfer}>
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Receiver Wallet ID"
-                  value={receiver}
-                  onChange={(e) => setReceiver(e.target.value)}
-                  required
-                />
-                <input
-                  type="number"
-                  className="input"
-                  placeholder="Amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  required
-                  min="1"
-                />
-                <input
-                  type="password"
-                  className="input"
-                  placeholder="PIN (4 digits)"
-                  value={pin}
-                  onChange={(e) => setPin(e.target.value)}
-                  required
-                  maxLength={4}
-                />
-                <div className="modal-buttons">
-                  <button type="submit" className="btn primary">Confirm</button>
-                  <button type="button" className="btn secondary" onClick={() => setShowTransfer(false)}>
-                    Cancel
+                  <button className="eye-toggle" onClick={toggleVisibility} aria-label={isHidden ? "Show" : "Hide"}>
+                    {isHidden ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
-              </form>
-            </div>
-          </div>
-        )}
 
-        {/* Add Money Modal */}
-        {showAddMoney && (
-          <div className="modal-overlay">
-            <div className="modal-card">
-              <h3>Add Money</h3>
-              {!clientSecret ? (
-                <>
-                  <input
-                    type="number"
-                    placeholder="Amount (₹)"
-                    value={topupAmount}
-                    onChange={(e) => setTopupAmount(e.target.value)}
-                    className="input"
-                  />
-                  <div className="modal-buttons">
-                    <button onClick={handleAddMoney} className="btn primary">Proceed</button>
-                    <button onClick={() => setShowAddMoney(false)} className="btn secondary">Cancel</button>
+                <p className="rewards-line">Reward Points: {rewards}</p>
+                <p className="wallet-id">Wallet ID: {user?.walletId || "Loading..."}</p>
+
+              
+                {isSubscriptionActive ? (
+                  <div className="subscription-info">
+                    <div className="plan-details">
+                      <strong>{currentPlan?.replace("_", " ")}</strong>
+                      <span className="valid-until">
+                        Valid till {new Date(user.subscription.endDate).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    {currentPlan === "CANTEEN_MONTHLY" && (
+                      <div className={`limit-status ${limitReached ? "limit-reached" : ""}`}>
+                        <div className="progress-text">
+                          <span>Meals this month: {monthlyUsed} / {mealLimit}</span>
+                        </div>
+                        {limitReached ? (
+                          <div className="limit-warning">
+                            Monthly limit reached • Regular purchase needed
+                          </div>
+                        ) : (
+                          <div className="remaining">
+                            {mealLimit - monthlyUsed} meals remaining
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    <button className="status-btn active" disabled>
+                      Active
+                    </button>
                   </div>
-                </>
-              ) : (
-                <Elements stripe={stripePromise} options={{ clientSecret }}>
-                  <StripeCheckout
-                    onClose={() => {
-                      setShowAddMoney(false);
-                      setClientSecret(null);
-                      fetchUserData();
+                ) : (
+                  <div className="no-subscription">
+                    <GoPro show={showGoPro} setShow={setShowGoPro} />
+                  </div>
+                )}
+
+                <div className="action-buttons">
+                  <button onClick={() => setShowAddMoney(true)} className="btn add-money">
+                    Add Money
+                  </button>
+                  <button
+                    onClick={() => {
+                      fetchMyorderData();
+                      setShowOrders(true);
                     }}
-                  />
-                </Elements>
-              )}
-            </div>
-          </div>
-        )}
-      <h3>Gift Reward Points</h3>
-         {showGiftpoints && (
-          <div>
-              <input
-        type="text"
-        className="input"
-        placeholder="Receiver Wallet ID"
-        value={walletId}
-        onChange={(e) => setWalletId(e.target.value)}
-      />
+                    className="btn my-orders"
+                  >
+                    My Orders
+                  </button>
+                  <button onClick={redeemRewardsPoints} className="btn redeem">
+                    Redeem Rewards
+                  </button>
+                </div>
 
-      <input
-        type="number"
-        className="input"
-        placeholder="Points to Gift"
-        value={points}
-        onChange={(e) => setPoints(e.target.value)}
-      />
-
-      <button  className="btn primary "  onClick={handleGift} disabled={loading}>
-        {loading ? "Sending..." : "Send Points"}
-      </button>
-          </div>
-          )}
-           <div className="gift-box">
-
-
-    
-    </div>
-        {/* Services */}
-        <section className="services-section">
-          <h2>Services</h2>
-          <div className="services-grid">
-            <div className="service-card" onClick={() => navigate("/food")}>
-              Recharge
-            </div>
-            <div
-              className={`service-card }`}
-              onClick={() => {
-                navigate("/fooditems");
-              }}
-            >
-              Food {limitReached && <small>(limit reached)</small>}
-            </div>
-            <div className="service-card" onClick={() => navigate("/events")}>
-              Events
-            </div>
-            <div className="service-card" onClick={() => navigate("/library")}>
-              Library
-            </div>
-          </div>
-        </section>
-
-        {/* Transactions */}
-        <section className="transactions-section">
-          <h3>Recent Transactions</h3>
-          {transactions?.length === 0 ? (
-            <p className="no-data">No transactions yet</p>
-          ) : (
-            <div className="transactions-list">
-              {transactions.map((tx) => (
-                <div key={tx._id} className="transaction-item">
-                  <div>
-                    <div className="tx-desc">
-                      {tx.type === "DEBIT" ? "Sent to" : "Received from"} {tx.counterpartyWalletId}
+                {showOrders && orders.length > 0 && (
+                  <div className="orders-modal">
+                    <div className="modal-header">
+                      <h3>My Orders</h3>
+                      <button onClick={() => setShowOrders(false)} className="close-btn">×</button>
                     </div>
-                    <div className="tx-meta">
-                      {format(new Date(tx.createdAt), "dd MMM yyyy • hh:mm a")} • Ref: {tx.reference}
-                    </div>
+                    <table className="orders-table">
+                      <thead>
+                        <tr>
+                          <th>Service</th>
+                          <th>Item</th>
+                          <th>Qty</th>
+                          <th>Total</th>
+                          <th>Status</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.map((order) => (
+                          <tr key={order._id}>
+                            <td>{order.service}</td>
+                            <td>{order.itemName}</td>
+                            <td>{order.quantity}</td>
+                            <td>₹{order.totalAmount}</td>
+                            <td>{order.status}</td>
+                            <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                  <div className={`tx-amount ${tx.type === "DEBIT" ? "debit" : "credit"}`}>
-                    {tx.type === "DEBIT" ? "-" : "+"}
-                    ₹{tx.amount}
+                )}
+              </div>
+
+              <button onClick={() => setShowTransfer(true)} className="send-money-btn">
+                Send Money
+              </button>
+
+              {showTransfer && (
+                <div className="modal-overlay">
+                  <div className="modal-card">
+                    <h3>Send Money</h3>
+                    <form onSubmit={handleTransfer}>
+                      <input
+                        type="text"
+                        className="input"
+                        placeholder="Receiver Wallet ID"
+                        value={receiver}
+                        onChange={(e) => setReceiver(e.target.value)}
+                        required
+                      />
+                      <input
+                        type="number"
+                        className="input"
+                        placeholder="Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        required
+                        min="1"
+                      />
+                      <input
+                        type="password"
+                        className="input"
+                        placeholder="PIN (4 digits)"
+                        value={pin}
+                        onChange={(e) => setPin(e.target.value)}
+                        required
+                        maxLength={4}
+                      />
+                      <div className="modal-buttons">
+                        <button type="submit" className="btn primary">Confirm</button>
+                        <button type="button" className="btn secondary" onClick={() => setShowTransfer(false)}>
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </section>
-      </main>
-    </div>
+              )}
+
+              {/* Add Money Modal */}
+              {showAddMoney && (
+                <div className="modal-overlay">
+                  <div className="modal-card">
+                    <h3>Add Money</h3>
+                    {!clientSecret ? (
+                      <>
+                        <input
+                          type="number"
+                          placeholder="Amount (₹)"
+                          value={topupAmount}
+                          onChange={(e) => setTopupAmount(e.target.value)}
+                          className="input"
+                        />
+                        <div className="modal-buttons">
+                          <button onClick={handleAddMoney} className="btn primary">Proceed</button>
+                          <button onClick={() => setShowAddMoney(false)} className="btn secondary">Cancel</button>
+                        </div>
+                      </>
+                    ) : (
+                      <Elements stripe={stripePromise} options={{ clientSecret }}>
+                        <StripeCheckout
+                          onClose={() => {
+                            setShowAddMoney(false);
+                            setClientSecret(null);
+                            fetchUserData();
+                          }}
+                        />
+                      </Elements>
+                    )}
+                  </div>
+                </div>
+              )}
+            <h3>Gift Reward Points</h3>
+              {showGiftpoints && (
+                <div>
+                    <input
+              type="text"
+              className="input"
+              placeholder="Receiver Wallet ID"
+              value={walletId}
+              onChange={(e) => setWalletId(e.target.value)}
+            />
+
+            <input
+              type="number"
+              className="input"
+              placeholder="Points to Gift"
+              value={points}
+              onChange={(e) => setPoints(e.target.value)}
+            />
+
+            <button  className="btn primary "  onClick={handleGift} disabled={loading}>
+              {loading ? "Sending..." : "Send Points"}
+            </button>
+                </div>
+                )}
+                <div className="gift-box">
+
+
+          
+          </div>
+              {/* Services */}
+              <section className="services-section">
+                <h2>Services</h2>
+                <div className="services-grid">
+                  <div className="service-card" onClick={() => navigate("/food")}>
+                    Recharge
+                  </div>
+                  <div
+                    className={`service-card }`}
+                    onClick={() => {
+                      navigate("/fooditems");
+                    }}
+                  >
+                    Food {limitReached && <small>(limit reached)</small>}
+                  </div>
+                  <div className="service-card" onClick={() => navigate("/events")}>
+                    Events
+                  </div>
+                  <div className="service-card" onClick={() => navigate("/library")}>
+                    Library
+                  </div>
+                </div>
+              </section>
+
+              {/* Transactions */}
+              <section className="transactions-section">
+                <h3>Recent Transactions</h3>
+                {transactions?.length === 0 ? (
+                  <p className="no-data">No transactions yet</p>
+                ) : (
+                  <div className="transactions-list">
+                    {transactions.map((tx) => (
+                      <div key={tx._id} className="transaction-item">
+                        <div>
+                          <div className="tx-desc">
+                            {tx.type === "DEBIT" ? "Sent to" : "Received from"} {tx.counterpartyWalletId}
+                          </div>
+                          <div className="tx-meta">
+                            {format(new Date(tx.createdAt), "dd MMM yyyy • hh:mm a")} • Ref: {tx.reference}
+                          </div>
+                        </div>
+                        <div className={`tx-amount ${tx.type === "DEBIT" ? "debit" : "credit"}`}>
+                          {tx.type === "DEBIT" ? "-" : "+"}
+                          ₹{tx.amount}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+            </main>
+          </div>
   );
 }

@@ -162,11 +162,23 @@
 td:nth-child(7) {  /* Status column */
   font-weight: 600;
 }
+.status.pending {
+  color: var(--warning);
+}
 
-td:nth-child(7):contains("Pending")   { color: var(--warning); }
-td:nth-child(7):contains("Completed") { color: var(--success); }
-td:nth-child(7):contains("Cancelled") { color: var(--danger); }
-td:nth-child(7):contains("Processing") { color: #6366f1; }
+.status.completed {
+  color: var(--success);
+}
+
+.status.cancelled {
+  color: var(--danger);
+}
+
+.status.processing {
+  color: #6366f1;
+}
+
+
 
 .loading {
   text-align: center;

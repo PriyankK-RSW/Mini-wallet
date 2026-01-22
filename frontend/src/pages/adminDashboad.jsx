@@ -41,70 +41,80 @@ const logout = () => {
   const { totalOrders, totalRevenue, serviceStats, orders } = data;
 
   return (
-    <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
-     <button onClick={logout}  className="logout-btn">
-             Logout
-           </button> 
-      <div className="stats-grid">
-        <div className="stat-card">
-          <h3>Total Orders</h3>
-          <p>{totalOrders}</p>
-        </div>
+<div className="admin-dashboard">
+  <h1>Admin Dashboard</h1>
 
-        <div className="stat-card">
-          <h3>Total Revenue</h3>
-          <p>₹{totalRevenue}</p>
-          
-        </div>
-      </div>
+  <button onClick={logout} className="logout-btn">
+    Logout
+  </button>
 
-      <h2> ALl Service </h2>
-      <div className="stats-grid">
-        {Object.entries(serviceStats).map(([service, stats]) => (
-          <div key={service} className="stat-card">
-            <h3>{service}</h3>
-            <p>Orders: {stats.totalOrders}</p>
-            <p>Revenue: ₹{stats.revenue}</p>
-              
-          </div>
-        ))}
-      </div>
-
-      <h2>All Orders</h2>
-
-      <div className="table-wrapper">
-        <table className="orders-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Service</th>
-              <th>Item</th>
-              <th>Qty</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order, index) => (
-              <tr key={order._id}>
-                <td>{index + 1}</td>
-                <td>{order.service}</td>
-                <td>{order.itemName}</td>
-                <td>{order.quantity}</td>
-                <td>₹{order.itemPrice}</td>
-                <td>₹{order.totalAmount}</td>
-                <td>{order.status}</td>
-                <td>
-                  {format(new Date(order.createdAt), "dd MMM yyyy, hh:mm a")}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+  {/* Stats Section */}
+  <div className="stats-grid">
+    <div className="stat-card">
+      <h3>Total Orders</h3>
+      <p>{totalOrders}</p>
     </div>
+
+    <div className="stat-card">
+      <h3>Total Revenue</h3>
+      <p>₹{totalRevenue}</p>
+    </div>
+  </div>
+
+  {/* Service Stats */}
+  <h2>All Services</h2>
+  <div className="stats-grid">
+    {Object.entries(serviceStats).map(([service, stats]) => (
+      <div key={service} className="stat-card">
+        <h3>{service}</h3>
+        <p>Orders: {stats.totalOrders}</p>
+        <p>Revenue: ₹{stats.revenue}</p>
+      </div>
+    ))}
+  </div>
+
+  {/* Orders Table */}
+  <h2>All Orders</h2>
+
+  <div className="table-wrapper">
+    <table className="orders-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Service</th>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {orders.map((order, index) => (
+          <tr key={order._id}>
+            <td>{index + 1}</td>
+            <td>{order.service}</td>
+            <td>{order.itemName}</td>
+            <td>{order.quantity}</td>
+            <td>₹{order.itemPrice}</td>
+            <td>₹{order.totalAmount}</td>
+
+  
+            <td className={`status ${order.status.toLowerCase()}`}>
+              {order.status}
+            </td>
+
+            <td>
+              {format(new Date(order.createdAt), "dd MMM yyyy, hh:mm a")}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
   );
 }
