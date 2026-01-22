@@ -48,7 +48,7 @@ const Events = () => {
       const token = localStorage.getItem("token");
       if (!token) return toast.error("Please login first");
 
-      const res = await fetch(`${BASE_URL}order/create`, {
+      const res = await fetch(`${API_BASE}/order/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

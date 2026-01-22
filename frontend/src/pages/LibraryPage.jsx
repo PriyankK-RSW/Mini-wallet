@@ -57,7 +57,7 @@ const API_BASE =  import.meta.env.VITE_BASE_URL;
         return;
       }
 
-      const res = await fetch(`${BASE_URL}order/create`, {
+      const res = await fetch(`${API_BASE}/order/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

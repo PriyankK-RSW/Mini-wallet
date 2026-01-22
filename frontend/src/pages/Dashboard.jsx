@@ -420,13 +420,7 @@ export default function Dashboard() {
       >
         {loading ? "Sending..." : "Send Points"}
       </button>
-
-      {/* Optional - you can add this later if you want feedback */}
-      {/* {giftStatus && (
-        <div className={`gift-status ${giftStatus.type}`}>
-          {giftStatus.message}
-        </div>
-      )} */}
+      
     </div>
   )}
 </div>
