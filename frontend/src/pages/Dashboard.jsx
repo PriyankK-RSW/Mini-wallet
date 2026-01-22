@@ -39,7 +39,7 @@ export default function Dashboard() {
   const [walletId, setWalletId] = useState("");
   const [points, setPoints] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showGiftpoints , setshowGiftpoints] = useState("false")
+  const [ showGiftpoints , setshowGiftpoints] = useState("false")
 
 
   const isSubscriptionActive =
@@ -389,31 +389,47 @@ export default function Dashboard() {
                   </div>
                 </div>
               )}
-            <h3>Gift Reward Points</h3>
-              {showGiftpoints && (
-                <div>
-                    <input
-              type="text"
-              className="input"
-              placeholder="Receiver Wallet ID"
-              value={walletId}
-              onChange={(e) => setWalletId(e.target.value)}
-            />
+         <div >
+          <div lassName="gift-box">
+  <h3>Gift Reward Points</h3>
 
-            <input
-              type="number"
-              className="input"
-              placeholder="Points to Gift"
-              value={points}
-              onChange={(e) => setPoints(e.target.value)}
-            />
+  {showGiftpoints && (
+    <div>
+      <input
+        type="text"
+        className="input"
+        placeholder="Receiver Wallet ID"
+        value={walletId}
+        onChange={(e) => setWalletId(e.target.value.trim())}
+      />
 
-            <button  className="btn primary "  onClick={handleGift} disabled={loading}>
-              {loading ? "Sending..." : "Send Points"}
-            </button>
-                </div>
-                )}
-                <div className="gift-box">
+      <input
+        type="number"
+        className="input"
+        placeholder="Points to Gift"
+        value={points}
+        onChange={(e) => setPoints(e.target.value)}
+        min="1"
+        step="1"
+      />
+
+      <button
+        className="send-money-btn"
+        onClick={handleGift}
+        disabled={loading || !walletId.trim() || !points || Number(points) < 1}
+      >
+        {loading ? "Sending..." : "Send Points"}
+      </button>
+
+      {/* Optional - you can add this later if you want feedback */}
+      {/* {giftStatus && (
+        <div className={`gift-status ${giftStatus.type}`}>
+          {giftStatus.message}
+        </div>
+      )} */}
+    </div>
+  )}
+</div>
 
 
           

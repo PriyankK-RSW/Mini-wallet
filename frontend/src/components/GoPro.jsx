@@ -26,14 +26,23 @@ export default function GoPro() {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        `${API_BASE}/wallet/subscribe`,
-        {
-          plan: selectedPlan,
-          pin,
-        }
-      );
+      const res = await fetch(`${API_BASE}/wallet/subscribe`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`, // if auth needed
+  },
+  body: JSON.stringify({
+    plan: selectedPlan,
+    pin,
+  }),
+});
 
+const data = await res.json();
+
+if (!res.ok) {
+  throw new Error(data.message || "Something went wrong");
+}
       toast.success(res.data.message);
       setShowModal(false);
       setPin("");
